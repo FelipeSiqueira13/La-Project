@@ -12,6 +12,7 @@
 #include "posicao.h"
 #include "gerabau.h"
 #include "gerarinimigodem.h"
+#include "gerarsaida.h"
 
 
 /**
@@ -123,7 +124,7 @@ void update(PLAYER *st, MAP *mapa) {
 int main() {
 	PLAYER st;
 	INIMIGO ini[100];
-	POSICAO bau[100];
+	POSICAO bau[100],saida;
 	int i = 0,j = 0,k, inispawn = 10,bauspawn = 3;
 	WINDOW *wnd = initscr();
 	int ncols, nrows;
@@ -232,7 +233,6 @@ int main() {
 		}
 		mapa = fakemapa;
 	}	
-
 	for(i = 0;i < bauspawn;i++){
 		gerabau(&bau[i],&mapa);
 	}
@@ -241,6 +241,7 @@ int main() {
 		gerarinimigodem(&ini[i],&mapa,&st);
 	}
 
+	gerarsaida(&saida,&mapa);
 
 	while(1) {
 		move(nrows - 1, 0);
@@ -267,6 +268,7 @@ int main() {
 		for(i = 0;i < inispawn;i++){
 			mvaddch(ini[i].pos.posX,ini[i].pos.posY , 'D' | A_BOLD);
 		}
+		mvaddch(saida.posX,saida.posY, 'S' | A_BOLD);
 		attroff(COLOR_PAIR(COLOR_YELLOW));
 		move(st.pos.posX, st.pos.posY);
 		update(&st, &mapa);

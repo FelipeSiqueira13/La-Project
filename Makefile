@@ -1,7 +1,7 @@
 CFLAGS=-Wall -Wextra -pedantic -O2
 LIBS=-lm -lcurses
 
-jogo: main.o mapa.o bau.o gerarinimigodem.o gerabau.o
+jogo: main.o mapa.o bau.o gerarinimigodem.o gerabau.o gerarsaida.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 
 clean:

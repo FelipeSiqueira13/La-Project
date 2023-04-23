@@ -4,16 +4,16 @@
 #include <ncurses.h>
 #include <time.h>
 
-#include "gerabau.h"
+#include "gerarsaida.h"
 
-void gerabau(POSICAO *bau,MAP *mapabau){
+void gerarsaida(POSICAO *saida,MAP *mapsaida ){
     int X, Y;
     X = rand() % COLS;
     Y = rand() % LINES;
-    while ((mapabau->obj[X][Y])=='#'||(mapabau->obj[X][Y])=='@'){
+    while ((mapsaida->obj[X][Y])=='#'){
         X = rand() % COLS;
         Y = rand() % LINES;
     }
-    bau->posX = X;
-    bau->posY = Y;
+    saida->posX = X;
+    saida->posY = Y;
 }

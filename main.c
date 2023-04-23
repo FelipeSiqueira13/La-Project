@@ -10,6 +10,8 @@
 #include "bau.h"
 #include "inimigo.h"
 #include "posicao.h"
+#include "gerabau.h"
+#include "gerarinimigodem.h"
 
 
 /**
@@ -28,13 +30,13 @@ POSICAO movement_action_enemies(POSICAO ini, int dx, int dy) {
 	return ini;
 }
 
-int obstaculo(POSICAO *pos, MAP *mapa, int dx, int dy){
+int obstaculo(POSICAO pos, MAP *mapa, int dx, int dy){
 	int o = 1;
 	if(dx != dy && (dx == 0 || dy == 0)){
-		if(mapa->obj[pos->posX-dx][pos->posY-dy] != '#') o = 0; 
+		if(mapa->obj[pos.posX+dx][pos.posY+dy] != '#') o = 0; 
 	}
 	else{
-		if((mapa->obj[pos->posX-dx][pos->posY-dy] != '#' && mapa->obj[pos->posX-dx][pos->posY] != '#') || (mapa->obj[pos->posX-dx][pos->posY-dy] != '#' && mapa->obj[pos->posX][pos->posY-dy] != '#')) o = 0;
+		if((mapa->obj[pos.posX+dx][pos.posY+dy] != '#' && mapa->obj[pos.posX+dx][pos.posY] != '#') || (mapa->obj[pos.posX+dx][pos.posY+dy] != '#' && mapa->obj[pos.posX][pos.posY+dy] != '#')) o = 0;
 	}
 	return o;
 }
@@ -48,7 +50,7 @@ void update(PLAYER *st, MAP *mapa) {
 	switch(key) {
 		case KEY_A1:
 		case '7': 
-			if(obstaculo(st, mapa, -1, -1) == 0)
+			if(obstaculo(pos, mapa, -1, -1) == 0)
 				st->pos = do_movement_action(pos, -1, -1);
 			break;
 		
@@ -56,13 +58,13 @@ void update(PLAYER *st, MAP *mapa) {
 		case 'w':
 		case 'W':
 		case '8':
-			if(obstaculo(st, mapa, -1, +0) == 0)
+			if(obstaculo(pos, mapa, -1, +0) == 0)
 				st->pos = do_movement_action(pos, -1, +0); 
 			break;
 		
 		case KEY_A3:
-		case '9': 
-			if(obstaculo(st, mapa, -1, +1) == 0)
+		case '9':
+			if(obstaculo(pos, mapa, -1, +1) == 0)
 				st->pos = do_movement_action(pos, -1, +1); 
 			break;
 
@@ -70,7 +72,7 @@ void update(PLAYER *st, MAP *mapa) {
 		case 'a':
 		case 'A':
 		case '4': 
-			if(obstaculo(st, mapa, +0, -1) == 0)
+			if(obstaculo(pos, mapa, +0, -1) == 0)
 				st->pos = do_movement_action(pos, +0, -1); 
 			break;
 		
@@ -82,13 +84,13 @@ void update(PLAYER *st, MAP *mapa) {
 		case 'd':
 		case 'D':
 		case '6': 
-			if(obstaculo(st, mapa, +0, +1) == 0)
+			if(obstaculo(pos, mapa, +0, +1) == 0)
 				st->pos = do_movement_action(pos, +0, +1); 
 			break;
 		
 		case KEY_C1:
 		case '1': 
-			if(obstaculo(st, mapa, +1, -1) == 0)
+			if(obstaculo(pos, mapa, +1, -1) == 0)
 				st->pos = do_movement_action(pos, +1, -1); 
 			break;
 
@@ -96,14 +98,14 @@ void update(PLAYER *st, MAP *mapa) {
 		case 's':
 		case 'S':
 		case '2': {
-			if(obstaculo(st, mapa, +1, +0) == 0)
+			if(obstaculo(pos, mapa, +1, +0) == 0)
 				st->pos = do_movement_action(pos, +1, +0); 
 			break;
 		}
 			
 		case KEY_C3:
 		case '3': {
-			if(obstaculo(st, mapa, +1, +1) == 0)
+			if(obstaculo(pos, mapa, +1, +1) == 0)
 				st->pos = do_movement_action(pos, +1, +1); 
 			break;
 		}
@@ -121,7 +123,8 @@ void update(PLAYER *st, MAP *mapa) {
 int main() {
 	PLAYER st;
 	INIMIGO ini[100];
-	int i = 0,j = 0,k;
+	POSICAO bau[100];
+	int i = 0,j = 0,k, inispawn = 10,bauspawn = 3;
 	WINDOW *wnd = initscr();
 	int ncols, nrows;
 	getmaxyx(wnd,nrows,ncols);
@@ -230,16 +233,15 @@ int main() {
 		mapa = fakemapa;
 	}	
 
+	for(i = 0;i < bauspawn;i++){
+		gerabau(&bau[i],&mapa);
+	}
+
+	for(i = 0;i < inispawn;i++){
+		gerarinimigodem(&ini[i],&mapa,&st);
+	}
 
 
-	/**
-	 * Este código está muito mal escrito!
-	 * Deveria existir uma função chamada draw_player!
-	 *
-	 * Se estamos a desenhar uma luz à volta do jogador
-	 * deveria existir uma função chamada draw_light!
-	 *
-	 */
 	while(1) {
 		move(nrows - 1, 0);
 		attron(COLOR_PAIR(COLOR_BLUE));
@@ -258,6 +260,12 @@ int main() {
 					mvaddch(i, j, '@' | A_BOLD);
 				}else mvaddch(i, j, mapa.obj[i][j] | A_BOLD);
 			}
+		}
+		for(i = 0;i < bauspawn;i++){
+			mvaddch(bau[i].posX,bau[i].posY , 'M' | A_BOLD);
+		}
+		for(i = 0;i < inispawn;i++){
+			mvaddch(ini[i].pos.posX,ini[i].pos.posY , 'D' | A_BOLD);
 		}
 		attroff(COLOR_PAIR(COLOR_YELLOW));
 		move(st.pos.posX, st.pos.posY);

@@ -2,4 +2,4 @@
 #include "map.h"
 #include "player.h"
 
-void gerarinimigodem(INIMIGO *s, MAP *r, PLAYER *t);
+void gerarinimigofant(INIMIGO *s, MAP *r, PLAYER *t);

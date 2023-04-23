@@ -4,12 +4,10 @@
 #include <ncurses.h>
 #include <time.h>
 
-#include "gerarinimigodem.h"
+#include "gerarinimigofant.h"
 
 void gerarinimigodem(INIMIGO *s, MAP *r, PLAYER *t){
     int X, Y;
-    time_t w;
-    srand48(time(&w));
     X = rand() % COLS;
     Y = rand() % LINES;
     while ((r->obj[X][Y]) == '#' || ((X == t->pos.posX) && (Y == t->pos.posY))){
@@ -18,9 +16,9 @@ void gerarinimigodem(INIMIGO *s, MAP *r, PLAYER *t){
     }
     s->pos.posX = X;
     s->pos.posY = Y;
-    s->vidainimigo = 25;
-    s->defesainimigo = 12;
-    s->ataqueinimigo = 2;
-    s->danoinimigo = 5;
+    s->vidainimigo = 15;
+    s->defesainimigo = 15;
+    s->ataqueinimigo = 4;
+    s->danoinimigo = 3;
     s->trigger = 0;
 }

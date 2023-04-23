@@ -20,6 +20,9 @@
 #include "gerarinimigofant.h"
 #include "gerarmapa.h"
 #include "vision.h"
+#include "mudarmapa.h"
+#include "iniciarcontrol.h"
+#include "gamecontrol.h"
 
 
 void update(PLAYER *st, MAP *mapa) {
@@ -123,6 +126,7 @@ void update(PLAYER *st, MAP *mapa) {
 }
 
 int main() {
+	CONTROL gamecontroller; 
 	PLAYER st;
 	INIMIGO ini[100],ini2 [100];
 	int i = 0, j = 0, inispawn = 10, bauspawn = 3, inispawn2 = 7;
@@ -148,13 +152,11 @@ int main() {
 
 	MAP mapa;
 
-	gerarmapa(&mapa, max);
+	iniciarcontrol(&gamecontroller);
+
+	gerarmapa(bauspawn,&mapa, max);
 	
 	gerar(&st, &mapa, max);
-
-	for(i = 0;i < bauspawn;i++){
-		gerabau(&mapa, max);
-	}
 
 	for(i = 0;i < inispawn;i++){
 		gerarinimigodem(&ini[i],&mapa,&st, max);
@@ -164,9 +166,8 @@ int main() {
 		gerarinimigofant(&ini2[i],&mapa,&st, max);
 	}
 
-	gerarsaida(&mapa, max);
-
 	while(1) {
+		ativarsaida(bauspawn,&st, &mapa, max);
 		move(nrows - 1, 0);
 		for(i = 0; i<LINES-1;i++){
 			for(j = 0; j<COLS;j++){

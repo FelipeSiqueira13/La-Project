@@ -7,7 +7,7 @@
 #include "gerarmapa.h"
 
 
-void gerarmapa(MAP *mapa, POSICAO max){
+void gerarmapa(int bauspawn,MAP *mapa, POSICAO max){
     MAP fakemapa;
     int i, j, k;
 
@@ -96,4 +96,9 @@ void gerarmapa(MAP *mapa, POSICAO max){
 		}
 		*mapa = fakemapa;
 	}	
+	gerarsaida(mapa, max);
+
+	for(i = 0;i < bauspawn;i++){
+		gerabau(mapa, max);
+	}
 }

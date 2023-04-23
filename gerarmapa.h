@@ -2,5 +2,7 @@
 #include "map.h"
 #include "posicao.h"
 #include "obstaculo.h"
+#include "gerarsaida.h"
+#include "gerabau.h"
 
-void gerarmapa(MAP *mapa, POSICAO max);
+void gerarmapa(int bauspawn,MAP *mapa, POSICAO max);

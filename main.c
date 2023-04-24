@@ -19,31 +19,76 @@ void do_movement_action(PLAYER *st, int dx, int dy) {
 	st->playerY += dy;
 }
 
-void update(PLAYER *st) {
+void update(PLAYER *st, MAP *mapa) {
 	int key = getch();
 
-	mvaddch(st->playerX, st->playerY, ' ');	//transforma a antiga posicao do player em vazio
+	//mvaddch(st->playerX, st->playerY, ' ');	//transforma a antiga posicao do player em vazio
 	switch(key) {
 		case KEY_A1:
-		case '7': do_movement_action(st, -1, -1); break;
+		case '7': 
+			if(mapa->obj[st->playerX-1][st->playerY-1] != '#')
+				do_movement_action(st, -1, -1);
+			break;
+		
 		case KEY_UP:
-		case '8': do_movement_action(st, -1, +0); break;
+		case 'w':
+		case 'W':
+		case '8':
+			if(mapa->obj[st->playerX-1][st->playerY] != '#')
+				do_movement_action(st, -1, +0); 
+			break;
+		
 		case KEY_A3:
-		case '9': do_movement_action(st, -1, +1); break;
+		case '9': 
+			if(mapa->obj[st->playerX-1][st->playerY+1] != '#')
+				do_movement_action(st, -1, +1); 
+			break;
+
 		case KEY_LEFT:
-		case '4': do_movement_action(st, +0, -1); break;
+		case 'a':
+		case 'A':
+		case '4': 
+			if(mapa->obj[st->playerX][st->playerY-1] != '#')
+				do_movement_action(st, +0, -1); 
+			break;
+		
 		case KEY_B2:
-		case '5': break;
+		case '5': 
+			break;
+		
 		case KEY_RIGHT:
-		case '6': do_movement_action(st, +0, +1); break;
+		case 'd':
+		case 'D':
+		case '6': 
+			if(mapa->obj[st->playerX][st->playerY+1] != '#')
+				do_movement_action(st, +0, +1); 
+			break;
+		
 		case KEY_C1:
-		case '1': do_movement_action(st, +1, -1); break;
+		case '1': 
+			if(mapa->obj[st->playerX+1][st->playerY-1] != '#')
+				do_movement_action(st, +1, -1); 
+			break;
+
 		case KEY_DOWN:
-		case '2': do_movement_action(st, +1, +0); break;
+		case 's':
+		case 'S':
+		case '2': {
+			if(mapa->obj[st->playerX+1][st->playerY] != '#')
+				do_movement_action(st, +1, +0); 
+			break;
+		}
+			
 		case KEY_C3:
-		case '3': do_movement_action(st, +1, +1); break;
-		case 'q': endwin(); exit(0); break;
-		case 'm': novositens(st); break;
+		case '3': {
+			if(mapa->obj[st->playerX+1][st->playerY+1] != '#')
+				do_movement_action(st, +1, +1); 
+			break;
+		}
+
+		case 'q': 
+			endwin(); exit(0); 
+			break;
 	}
 }
 
@@ -71,13 +116,13 @@ int main() {
 
 	gerar(&st);
 
-	MAP mapa[LINES][COLS];
+	MAP mapa;
 
 	for(i = 0; i<LINES-1;i++){
 		for(j = 0; j<COLS;j++){
 			if( rand() % 100 > 20){
-			mapa[i][j].obj = '.';
-			}else mapa[i][j].obj = '#';
+			mapa.obj[i][j] = '.';
+			}else mapa.obj[i][j] = '#';
 		}
 	}
 	
@@ -106,7 +151,7 @@ int main() {
 			for(j = 0; j<COLS;j++){
 				if((i == st.playerX) && (j == st.playerY)){
 					mvaddch(i, j, '@' | A_BOLD);
-				}else mvaddch(i, j, mapa[i][j].obj | A_BOLD);
+				}else mvaddch(i, j, mapa.obj[i][j] | A_BOLD);
 			}
 		}
 		attroff(COLOR_PAIR(COLOR_YELLOW));
@@ -124,7 +169,7 @@ int main() {
 		mvaddch(st.playerX + 1, st.playerY + 1, '.' | A_BOLD);
         attroff(COLOR_PAIR(COLOR_YELLOW));	*/
 		move(st.playerX, st.playerY);
-		update(&st);
+		update(&st, &mapa);
 	}
 
 	return 0;

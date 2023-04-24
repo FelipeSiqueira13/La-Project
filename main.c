@@ -94,7 +94,7 @@ void update(PLAYER *st, MAP *mapa) {
 
 int main() {
 	PLAYER st;
-	int i = 0,j = 0;
+	int i = 0,j = 0,k;
 	WINDOW *wnd = initscr();
 	int ncols, nrows;
 	getmaxyx(wnd,nrows,ncols);
@@ -116,16 +116,94 @@ int main() {
 
 	gerar(&st);
 
-	MAP mapa;
+	MAP mapa, fakemapa;
 
-	for(i = 0; i<LINES-1;i++){
-		for(j = 0; j<COLS;j++){
-			if( rand() % 100 > 20){
+	for(i = 0; i<LINES;i++){
+		mapa.obj[i][0] = '#';
+		mapa.obj[i][COLS-1] = '#';
+	}
+	for(j = 1; j<COLS;j++){
+		mapa.obj[0][j] = '#';
+		mapa.obj[LINES-2][j] = '#';
+	}
+	for(i = 1; i<LINES-2;i++){
+		for(j = 1; j<COLS-1;j++){
+			if( rand() % 100 > 40){
 			mapa.obj[i][j] = '.';
 			}else mapa.obj[i][j] = '#';
 		}
 	}
-	
+	fakemapa = mapa;
+	int cont,cont2;
+	for(k=0;k < 4; k++){
+		for(i = 2; i<LINES-3;i++){
+			for(j = 2; j<COLS-2;j++){
+				cont = 0;
+				cont2 = 0;
+				if(mapa.obj[i+1][j] == '#') cont++;
+				if(mapa.obj[i+1][j-1] == '#') cont++;
+				if(mapa.obj[i+1][j+1] == '#') cont++;
+				if(mapa.obj[i][j] == '#') cont++;
+				if(mapa.obj[i][j-1] == '#') cont++;
+				if(mapa.obj[i][j+1] == '#') cont++;
+				if(mapa.obj[i-1][j] == '#') cont++;
+				if(mapa.obj[i-1][j-1] == '#') cont++;
+				if(mapa.obj[i-1][j+1] == '#') cont++;
+				
+				if(mapa.obj[i+2][j+2] == '#') cont2++;
+				if(mapa.obj[i+2][j-2] == '#') cont2++;
+				if(mapa.obj[i+2][j+1] == '#') cont2++;
+				if(mapa.obj[i+2][j-1] == '#') cont2++;
+				if(mapa.obj[i+2][j] == '#') cont2++;
+				if(mapa.obj[i-2][j+2] == '#') cont2++;
+				if(mapa.obj[i-2][j-2] == '#') cont2++;
+				if(mapa.obj[i-2][j+1] == '#') cont2++;
+				if(mapa.obj[i-2][j-1] == '#') cont2++;
+				if(mapa.obj[i-2][j] == '#') cont2++;
+				if(mapa.obj[i-1][j-2] == '#') cont2++;
+				if(mapa.obj[i-1][j+2] == '#') cont2++;
+				if(mapa.obj[i][j-2] == '#') cont2++;
+				if(mapa.obj[i][j+2] == '#') cont2++;
+				if(mapa.obj[i+1][j-2] == '#') cont2++;
+				if(mapa.obj[i+1][j+2] == '#') cont2++;
+				
+
+				if(cont >= 5 || cont2 <= 2){
+					fakemapa.obj[i][j] = '#';
+				}else{
+					fakemapa.obj[i][j] = '.';
+				}
+			}
+		}
+		mapa = fakemapa;
+	}
+
+	for(k=0;k < 3; k++){
+		for(i = 2; i<LINES-3;i++){
+			for(j = 2; j<COLS-2;j++){
+				cont = 0;
+				if(mapa.obj[i+1][j] == '#') cont++;
+				if(mapa.obj[i+1][j-1] == '#') cont++;
+				if(mapa.obj[i+1][j+1] == '#') cont++;
+				if(mapa.obj[i][j] == '#') cont++;
+				if(mapa.obj[i][j-1] == '#') cont++;
+				if(mapa.obj[i][j+1] == '#') cont++;
+				if(mapa.obj[i-1][j] == '#') cont++;
+				if(mapa.obj[i-1][j-1] == '#') cont++;
+				if(mapa.obj[i-1][j+1] == '#') cont++;
+
+				if(cont >= 5){
+					
+				}else{
+					fakemapa.obj[i][j] = '.';
+				}
+
+			}
+		}
+		mapa = fakemapa;
+	}	
+
+
 
 	/**
 	 * Este código está muito mal escrito!

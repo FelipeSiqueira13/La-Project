@@ -26,7 +26,7 @@ void update(PLAYER *st, MAP *mapa) {
 	switch(key) {
 		case KEY_A1:
 		case '7': 
-			if(mapa->obj[st->playerX-1][st->playerY-1] != '#')
+			if((mapa->obj[st->playerX-1][st->playerY-1] != '#' && mapa->obj[st->playerX-1][st->playerY] != '#') || (mapa->obj[st->playerX-1][st->playerY-1] != '#' && mapa->obj[st->playerX][st->playerY-1] != '#'))
 				do_movement_action(st, -1, -1);
 			break;
 		
@@ -40,7 +40,7 @@ void update(PLAYER *st, MAP *mapa) {
 		
 		case KEY_A3:
 		case '9': 
-			if(mapa->obj[st->playerX-1][st->playerY+1] != '#')
+			if((mapa->obj[st->playerX-1][st->playerY+1] != '#' && mapa->obj[st->playerX-1][st->playerY] != '#') || (mapa->obj[st->playerX-1][st->playerY+1] != '#' && mapa->obj[st->playerX][st->playerY+1] != '#'))
 				do_movement_action(st, -1, +1); 
 			break;
 
@@ -66,7 +66,7 @@ void update(PLAYER *st, MAP *mapa) {
 		
 		case KEY_C1:
 		case '1': 
-			if(mapa->obj[st->playerX+1][st->playerY-1] != '#')
+			if((mapa->obj[st->playerX+1][st->playerY-1] != '#' && mapa->obj[st->playerX+1][st->playerY] != '#') || (mapa->obj[st->playerX+1][st->playerY-1] != '#' && mapa->obj[st->playerX][st->playerY-1] != '#'))
 				do_movement_action(st, +1, -1); 
 			break;
 
@@ -81,7 +81,7 @@ void update(PLAYER *st, MAP *mapa) {
 			
 		case KEY_C3:
 		case '3': {
-			if(mapa->obj[st->playerX+1][st->playerY+1] != '#')
+			if((mapa->obj[st->playerX+1][st->playerY+1] != '#' && mapa->obj[st->playerX+1][st->playerY] != '#') || (mapa->obj[st->playerX+1][st->playerY+1] != '#' &&  mapa->obj[st->playerX][st->playerY+1] != '#'))
 				do_movement_action(st, +1, +1); 
 			break;
 		}

@@ -4,10 +4,10 @@
 #include <ncurses.h>
 #include <time.h>
 
-#include "state.h"
 #include "mapa.h"
 #include "player.h"
 #include "map.h"
+#include "bau.h"
 
 
 /**
@@ -43,11 +43,12 @@ void update(PLAYER *st) {
 		case KEY_C3:
 		case '3': do_movement_action(st, +1, +1); break;
 		case 'q': endwin(); exit(0); break;
+		case 'm': novositens(st); break;
 	}
 }
 
 int main() {
-	PLAYER st = {20,20};
+	PLAYER st;
 	int i = 0,j = 0;
 	WINDOW *wnd = initscr();
 	int ncols, nrows;
@@ -92,7 +93,12 @@ int main() {
 	while(1) {
 		move(nrows - 1, 0);
 		attron(COLOR_PAIR(COLOR_BLUE));
-		printw("(%d, %d) %d %d", st.playerX, st.playerY, ncols, nrows);
+		int nivel = st.nivel;
+		if (nivel>=5){
+			printw("(%d, %d) %d %d Nivel:%d Vida:%d/%d Defesa:%d Flechas:%d Espada:%d Arco:%d Pocoes de Vida:%d Agua Benta:%d", st.playerX, st.playerY, ncols, nrows, st.nivel, st.vida, st.vidamaxima, st.defesa, st.flechas, st.ataqueespada, st.ataquearco, st.pocoesvida, st.aguabenta);
+		} else{
+			printw("(%d, %d) %d %d Nivel:%d Vida:%d/%d Defesa:%d Flechas:%d Espada:%d Arco:%d Pocoes de Vida:%d ???:%d", st.playerX, st.playerY, ncols, nrows, st.nivel, st.vida, st.vidamaxima, st.defesa, st.flechas, st.ataqueespada, st.ataquearco, st.pocoesvida, st.aguabenta);
+		}
 		attroff(COLOR_PAIR(COLOR_BLUE));
 
 		attron(COLOR_PAIR(COLOR_YELLOW));

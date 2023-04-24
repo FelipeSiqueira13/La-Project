@@ -5,7 +5,15 @@
 typedef struct player{
 	int playerX;
 	int playerY;
-	//life
+	int nivel;
+	int vida;
+	int vidamaxima;
+	int defesa;
+	int flechas;
+	int ataqueespada;
+	int ataquearco;
+	int pocoesvida;
+	int aguabenta;
 } PLAYER;
 
 #endif

@@ -86,8 +86,12 @@ void update(PLAYER *st, MAP *mapa) {
 			break;
 		}
 
+		case 'Q':
 		case 'q': 
 			endwin(); exit(0); 
+			break;
+		case 'm':
+			novositens(st);
 			break;
 	}
 }

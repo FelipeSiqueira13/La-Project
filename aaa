@@ -1,0 +1,9 @@
+int obstaculo(Criatura *st, MAP *mapa, int dx, int dy){
+	int o = 0;
+	if(dx != dy && (dx == 0 || dy == 0)){
+			if(mapa->obj[criaturaX-dx][criaturaY-dy] == '#') o = 1; 
+
+	}
+
+	return o;
+}

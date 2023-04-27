@@ -1,10 +1,10 @@
 #ifndef ___PLAYER_H___
 #define ___PLAYER_H___
 
+#include  "posicao.h"
 
 typedef struct player{
-	int playerX;
-	int playerY;
+	POSICAO pos;
 	int nivel;
 	int vida;
 	int vidamaxima;

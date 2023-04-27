@@ -6,9 +6,10 @@
 
 #include "mapa.h"
 
+
 void gerar(PLAYER *s) {
-	s->playerX = 10;
-	s->playerY = 10;
+	s->pos.posX = 10;
+	s-> pos.posY = 10;
 	s->nivel = 1;
 	s->vida = 50;
 	s->vidamaxima = 50;

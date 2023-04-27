@@ -8,48 +8,70 @@
 #include "player.h"
 #include "map.h"
 #include "bau.h"
+#include "inimigo.h"
+#include "posicao.h"
 
 
 /**
  *
  * Um pequeno exemplo que mostra o que se pode fazer
  */
-void do_movement_action(PLAYER *st, int dx, int dy) {
-	st->playerX += dx;
-	st->playerY += dy;
+POSICAO do_movement_action(POSICAO st, int dx, int dy) {
+	st.posX += dx;
+	st.posY += dy;
+	return st;
+}
+
+POSICAO movement_action_enemies(POSICAO ini, int dx, int dy) {
+	ini.posX += dx;
+	ini.posY += dy;
+	return ini;
+}
+
+int obstaculo(POSICAO *pos, MAP *mapa, int dx, int dy){
+	int o = 1;
+	if(dx != dy && (dx == 0 || dy == 0)){
+		if(mapa->obj[pos->posX-dx][pos->posY-dy] != '#') o = 0; 
+	}
+	else{
+		if((mapa->obj[pos->posX-dx][pos->posY-dy] != '#' && mapa->obj[pos->posX-dx][pos->posY] != '#') || (mapa->obj[pos->posX-dx][pos->posY-dy] != '#' && mapa->obj[pos->posX][pos->posY-dy] != '#')) o = 0;
+	}
+	return o;
 }
 
 void update(PLAYER *st, MAP *mapa) {
-	int key = getch();
+	int key = getch();	
+	POSICAO pos = st->pos;
+	
 
 	//mvaddch(st->playerX, st->playerY, ' ');	//transforma a antiga posicao do player em vazio
 	switch(key) {
 		case KEY_A1:
 		case '7': 
-			if((mapa->obj[st->playerX-1][st->playerY-1] != '#' && mapa->obj[st->playerX-1][st->playerY] != '#') || (mapa->obj[st->playerX-1][st->playerY-1] != '#' && mapa->obj[st->playerX][st->playerY-1] != '#'))
-				do_movement_action(st, -1, -1);
+			if(obstaculo(st, mapa, -1, -1) == 0)
+				st->pos = do_movement_action(pos, -1, -1);
 			break;
 		
 		case KEY_UP:
 		case 'w':
 		case 'W':
 		case '8':
-			if(mapa->obj[st->playerX-1][st->playerY] != '#')
-				do_movement_action(st, -1, +0); 
+			if(obstaculo(st, mapa, -1, +0) == 0)
+				st->pos = do_movement_action(pos, -1, +0); 
 			break;
 		
 		case KEY_A3:
 		case '9': 
-			if((mapa->obj[st->playerX-1][st->playerY+1] != '#' && mapa->obj[st->playerX-1][st->playerY] != '#') || (mapa->obj[st->playerX-1][st->playerY+1] != '#' && mapa->obj[st->playerX][st->playerY+1] != '#'))
-				do_movement_action(st, -1, +1); 
+			if(obstaculo(st, mapa, -1, +1) == 0)
+				st->pos = do_movement_action(pos, -1, +1); 
 			break;
 
 		case KEY_LEFT:
 		case 'a':
 		case 'A':
 		case '4': 
-			if(mapa->obj[st->playerX][st->playerY-1] != '#')
-				do_movement_action(st, +0, -1); 
+			if(obstaculo(st, mapa, +0, -1) == 0)
+				st->pos = do_movement_action(pos, +0, -1); 
 			break;
 		
 		case KEY_B2:
@@ -60,29 +82,29 @@ void update(PLAYER *st, MAP *mapa) {
 		case 'd':
 		case 'D':
 		case '6': 
-			if(mapa->obj[st->playerX][st->playerY+1] != '#')
-				do_movement_action(st, +0, +1); 
+			if(obstaculo(st, mapa, +0, +1) == 0)
+				st->pos = do_movement_action(pos, +0, +1); 
 			break;
 		
 		case KEY_C1:
 		case '1': 
-			if((mapa->obj[st->playerX+1][st->playerY-1] != '#' && mapa->obj[st->playerX+1][st->playerY] != '#') || (mapa->obj[st->playerX+1][st->playerY-1] != '#' && mapa->obj[st->playerX][st->playerY-1] != '#'))
-				do_movement_action(st, +1, -1); 
+			if(obstaculo(st, mapa, +1, -1) == 0)
+				st->pos = do_movement_action(pos, +1, -1); 
 			break;
 
 		case KEY_DOWN:
 		case 's':
 		case 'S':
 		case '2': {
-			if(mapa->obj[st->playerX+1][st->playerY] != '#')
-				do_movement_action(st, +1, +0); 
+			if(obstaculo(st, mapa, +1, +0) == 0)
+				st->pos = do_movement_action(pos, +1, +0); 
 			break;
 		}
 			
 		case KEY_C3:
 		case '3': {
-			if((mapa->obj[st->playerX+1][st->playerY+1] != '#' && mapa->obj[st->playerX+1][st->playerY] != '#') || (mapa->obj[st->playerX+1][st->playerY+1] != '#' &&  mapa->obj[st->playerX][st->playerY+1] != '#'))
-				do_movement_action(st, +1, +1); 
+			if(obstaculo(st, mapa, +1, +1) == 0)
+				st->pos = do_movement_action(pos, +1, +1); 
 			break;
 		}
 
@@ -98,6 +120,7 @@ void update(PLAYER *st, MAP *mapa) {
 
 int main() {
 	PLAYER st;
+	INIMIGO ini[100];
 	int i = 0,j = 0,k;
 	WINDOW *wnd = initscr();
 	int ncols, nrows;
@@ -222,35 +245,22 @@ int main() {
 		attron(COLOR_PAIR(COLOR_BLUE));
 		int nivel = st.nivel;
 		if (nivel>=5){
-			printw("(%d, %d) %d %d Nivel:%d Vida:%d/%d Defesa:%d Flechas:%d Espada:%d Arco:%d Pocoes de Vida:%d Agua Benta:%d", st.playerX, st.playerY, ncols, nrows, st.nivel, st.vida, st.vidamaxima, st.defesa, st.flechas, st.ataqueespada, st.ataquearco, st.pocoesvida, st.aguabenta);
+			printw("(%d, %d) %d %d Nivel:%d Vida:%d/%d Defesa:%d Flechas:%d Espada:%d Arco:%d Pocoes de Vida:%d Agua Benta:%d", st.pos.posX, st.pos.posY, ncols, nrows, st.nivel, st.vida, st.vidamaxima, st.defesa, st.flechas, st.ataqueespada, st.ataquearco, st.pocoesvida, st.aguabenta);
 		} else{
-			printw("(%d, %d) %d %d Nivel:%d Vida:%d/%d Defesa:%d Flechas:%d Espada:%d Arco:%d Pocoes de Vida:%d ???:%d", st.playerX, st.playerY, ncols, nrows, st.nivel, st.vida, st.vidamaxima, st.defesa, st.flechas, st.ataqueespada, st.ataquearco, st.pocoesvida, st.aguabenta);
+			printw("(%d, %d) %d %d Nivel:%d Vida:%d/%d Defesa:%d Flechas:%d Espada:%d Arco:%d Pocoes de Vida:%d ???:%d", st.pos.posX, st.pos.posY, ncols, nrows, st.nivel, st.vida, st.vidamaxima, st.defesa, st.flechas, st.ataqueespada, st.ataquearco, st.pocoesvida, st.aguabenta);
 		}
 		attroff(COLOR_PAIR(COLOR_BLUE));
 
 		attron(COLOR_PAIR(COLOR_YELLOW));
 		for(i = 0; i<LINES-1;i++){
 			for(j = 0; j<COLS;j++){
-				if((i == st.playerX) && (j == st.playerY)){
+				if((i == st.pos.posX) && (j == st.pos.posY)){
 					mvaddch(i, j, '@' | A_BOLD);
 				}else mvaddch(i, j, mapa.obj[i][j] | A_BOLD);
 			}
 		}
 		attroff(COLOR_PAIR(COLOR_YELLOW));
-/*		attron(COLOR_PAIR(COLOR_WHITE));
-		mvaddch(st.playerX, st.playerY, '@' | A_BOLD);
-		attroff(COLOR_PAIR(COLOR_WHITE));
-		attron(COLOR_PAIR(COLOR_YELLOW));
-		mvaddch(st.playerX - 1, st.playerY - 1, '.' | A_BOLD);
-		mvaddch(st.playerX - 1, st.playerY + 0, '.' | A_BOLD);
-		mvaddch(st.playerX - 1, st.playerY + 1, '.' | A_BOLD);
-		mvaddch(st.playerX + 0, st.playerY - 1, '.' | A_BOLD);
-		mvaddch(st.playerX + 0, st.playerY + 1, '.' | A_BOLD);
-		mvaddch(st.playerX + 1, st.playerY - 1, '.' | A_BOLD);
-		mvaddch(st.playerX + 1, st.playerY + 0, '.' | A_BOLD);
-		mvaddch(st.playerX + 1, st.playerY + 1, '.' | A_BOLD);
-        attroff(COLOR_PAIR(COLOR_YELLOW));	*/
-		move(st.playerX, st.playerY);
+		move(st.pos.posX, st.pos.posY);
 		update(&st, &mapa);
 	}
 

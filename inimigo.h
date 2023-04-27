@@ -1,9 +1,10 @@
 #ifndef ___INIMIGO_H___
 #define ___INIMIGO_H___
 
+#include "posicao.h"
+
 typedef struct inimigo{
-    int inimigoX;
-    int inimigoY;
+    POSICAO pos;
     int vidainimigo;
     int defesainimigo;
     int ataqueinimigo;

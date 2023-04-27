@@ -22,3 +22,7 @@ void gerarinimigodem(INIMIGO *s, MAP *r, PLAYER *t, POSICAO max){
     s->danoinimigo = 5;
     s->trigger = 0;
 }
+void isactive(INIMIGO *s, MAP *r){
+    if(r->vision[s->pos.posX][s->pos.posY] == 2) s->trigger = 1;
+    else s->trigger = 0;
+}

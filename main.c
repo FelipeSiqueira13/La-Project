@@ -19,6 +19,7 @@
 #include "ativarbau.h"
 #include "gerarinimigofant.h"
 #include "gerarmapa.h"
+#include "vision.h"
 
 
 void update(PLAYER *st, MAP *mapa) {
@@ -123,9 +124,7 @@ void update(PLAYER *st, MAP *mapa) {
 
 int main() {
 	PLAYER st;
-	INIMIGO ini[100];
-	INIMIGO ini2 [100];
-	POSICAO saida;
+	INIMIGO ini[100],ini2 [100];
 	int i = 0, j = 0, inispawn = 10, bauspawn = 3, inispawn2 = 7;
 	WINDOW *wnd = initscr();
 	int ncols, nrows;
@@ -147,12 +146,12 @@ int main() {
 	
 	POSICAO max = {nrows, ncols};
 
-	gerar(&st);
-
 	MAP mapa;
 
 	gerarmapa(&mapa, max);
 	
+	gerar(&st, &mapa, max);
+
 	for(i = 0;i < bauspawn;i++){
 		gerabau(&mapa, max);
 	}
@@ -165,7 +164,7 @@ int main() {
 		gerarinimigofant(&ini2[i],&mapa,&st, max);
 	}
 
-	gerarsaida(&saida,&mapa, max);
+	gerarsaida(&mapa, max);
 
 	while(1) {
 		move(nrows - 1, 0);
@@ -175,12 +174,14 @@ int main() {
 			}
 		}
 		calcdist(&mapa,st.pos,0);
+		visionupdate(&mapa,max);
+		vision(&mapa,st.pos);
 		attron(COLOR_PAIR(COLOR_BLUE));
 		int nivel = st.nivel;
 		if (nivel>=5){
-			printw("(%d, %d) %d %d Nivel:%d Vida:%d/%d Defesa:%d Flechas:%d Espada:%d Arco:%d Pocoes de Vida:%d Agua Benta:%d", st.pos.posX, st.pos.posY, ncols, nrows, st.nivel, st.vida, st.vidamaxima, st.defesa, st.flechas, st.ataqueespada, st.ataquearco, st.pocoesvida, st.aguabenta);
+			printw("(%d, %d) %d %d Nivel:%d Vida:%d/%d Defesa:%d Flechas:%d Espada:%d Arco:%d Pocoes de Vida:%d Agua Benta:%d", st.pos.posY, st.pos.posX, nrows, ncols, st.nivel, st.vida, st.vidamaxima, st.defesa, st.flechas, st.ataqueespada, st.ataquearco, st.pocoesvida, st.aguabenta);
 		} else{
-			printw("(%d, %d) %d %d Nivel:%d Vida:%d/%d Defesa:%d Flechas:%d Espada:%d Arco:%d Pocoes de Vida:%d ???:%d", st.pos.posX, st.pos.posY, ncols, nrows, st.nivel, st.vida, st.vidamaxima, st.defesa, st.flechas, st.ataqueespada, st.ataquearco, st.pocoesvida, st.aguabenta);
+			printw("(%d, %d) %d %d Nivel:%d Vida:%d/%d Defesa:%d Flechas:%d Espada:%d Arco:%d Pocoes de Vida:%d ???:%d", st.pos.posY, st.pos.posX, nrows, ncols, st.nivel, st.vida, st.vidamaxima, st.defesa, st.flechas, st.ataqueespada, st.ataquearco, st.pocoesvida, st.aguabenta);
 		}
 		attroff(COLOR_PAIR(COLOR_BLUE));
 
@@ -188,9 +189,11 @@ int main() {
 		if(st.debugmode==0){
 			for(i = 0; i<LINES-1;i++){
 				for(j = 0; j<COLS;j++){
-					if((i == st.pos.posX) && (j == st.pos.posY)){
-						mvaddch(i, j, '@' | A_BOLD);
-					}else mvaddch(i, j, mapa.obj[i][j] | A_BOLD);
+					if((mapa.vision[i][j] == 2)){
+						mvaddch(i, j, mapa.obj[i][j] | A_BOLD);
+					}else if(mapa.vision[i][j] == 1)
+						{mvaddch(i, j, mapa.obj[i][j]);
+					}
 				}
 			}
 		}else{
@@ -201,16 +204,22 @@ int main() {
 					}else mvaddch(i, j, (47+mapa.dist[i][j]) | A_BOLD);
 				}
 			}
-		}calcdist(&mapa,st.pos,0);
+		}
+		mvaddch(st.pos.posX, st.pos.posY, '@' | A_BOLD);
+		calcdist(&mapa,st.pos,0);
+		
 		attroff(COLOR_PAIR(COLOR_YELLOW));
+		for(i=0;i<inispawn;i++)isactive(&ini[i],&mapa);
+		for(i=0;i<inispawn2;i++)isactive(&ini2[i],&mapa);
 		attron(COLOR_PAIR(COLOR_RED));
 		for(i = 0;i < inispawn;i++){
-			mvaddch(ini[i].pos.posX,ini[i].pos.posY , 'D' | A_BOLD);
+			if(ini[i].trigger==1)
+				mvaddch(ini[i].pos.posX,ini[i].pos.posY , 'D' | A_BOLD);
 		}
 		for(i = 0;i < inispawn2;i++){
-			mvaddch(ini2[i].pos.posX,ini2[i].pos.posY , 'F' | A_BOLD);
+			if(ini2[i].trigger==1)
+				mvaddch(ini2[i].pos.posX,ini2[i].pos.posY , 'F' | A_BOLD);
 		}
-		mvaddch(saida.posX,saida.posY, 'S' | A_BOLD);
 		attroff(COLOR_PAIR(COLOR_RED));
 		move(st.pos.posX, st.pos.posY);	
 		update(&st, &mapa);

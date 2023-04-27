@@ -21,6 +21,7 @@ void gerarmapa(MAP *mapa, POSICAO max){
 	}
 	for(i = 1; i<max.posX-2;i++){
 		for(j = 1; j<max.posY-1;j++){
+			mapa->vision[i][j] = 0;
 			if( rand() % 100 > 40){
 			mapa->obj[i][j] = '.';
 			}else mapa->obj[i][j] = '#';
@@ -30,8 +31,8 @@ void gerarmapa(MAP *mapa, POSICAO max){
 
 	int cont, cont2;
 	for(k=0;k < 4; k++){
-		for(i = 2; i<max.posX-3;i++){
-			for(j = 2; j<max.posY-2;j++){
+		for(i = 2; i<max.posX-2;i++){
+			for(j = 2; j<max.posY-1;j++){
 				cont = 0;
 				cont2 = 0;
 				if(mapa->obj[i+1][j] == '#') cont++;
@@ -72,8 +73,8 @@ void gerarmapa(MAP *mapa, POSICAO max){
 	}
 
 	for(k=0;k < 3; k++){
-		for(i = 2; i<max.posX-3;i++){
-			for(j = 2; j<max.posY-2;j++){
+		for(i = 2; i<max.posX-2;i++){
+			for(j = 2; j<max.posY-1;j++){
 				cont = 0;
 				if(mapa->obj[i+1][j] == '#') cont++;
 				if(mapa->obj[i+1][j-1] == '#') cont++;

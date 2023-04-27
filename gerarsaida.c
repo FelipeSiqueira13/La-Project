@@ -6,7 +6,7 @@
 
 #include "gerarsaida.h"
 
-void gerarsaida(POSICAO *saida,MAP *mapsaida, POSICAO max){
+void gerarsaida(MAP *mapsaida, POSICAO max){
     int X, Y;
     X = rand() % max.posX;
     Y = rand() % max.posY;
@@ -14,6 +14,5 @@ void gerarsaida(POSICAO *saida,MAP *mapsaida, POSICAO max){
         X = rand() % max.posX;
         Y = rand() % max.posY;
     }
-    saida->posX = X;
-    saida->posY = Y;
+    mapsaida->obj[X][Y]='S';
 }

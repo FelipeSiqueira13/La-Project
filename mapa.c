@@ -6,10 +6,16 @@
 
 #include "mapa.h"
 
-
-void gerar(PLAYER *s) {
-	s->pos.posX = 10;
-	s-> pos.posY = 10;
+void gerar(PLAYER *s,MAP *mapa, POSICAO max) {
+	int X, Y;
+    X = rand() % max.posX;
+    Y = rand() % max.posY;
+    while ((mapa->obj[X][Y]) == '#'){
+        X = rand() % max.posX;
+        Y = rand() % max.posY;
+    }
+	s->pos.posX = X;
+	s-> pos.posY = Y;
 	s->debugmode = 0;
 	s->nivel = 1;
 	s->vida = 50;

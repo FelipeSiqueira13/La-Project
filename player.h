@@ -5,6 +5,7 @@
 
 typedef struct player{
 	POSICAO pos;
+	int debugmode;
 	int nivel;
 	int vida;
 	int vidamaxima;

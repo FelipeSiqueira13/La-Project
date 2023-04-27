@@ -15,12 +15,12 @@
 #include "movimento.h"
 #include "obstaculo.h"
 #include "gerarsaida.h"
+#include "calcdist.h"
 
 
 void update(PLAYER *st, MAP *mapa) {
 	int key = getch();	
 	POSICAO pos = st->pos;
-	
 
 	//mvaddch(st->playerX, st->playerY, ' ');	//transforma a antiga posicao do player em vazio
 	switch(key) {
@@ -93,6 +93,14 @@ void update(PLAYER *st, MAP *mapa) {
 		case 'm':
 			novositens(st);
 			break;
+		case 'n':
+			if(st->debugmode == 0){
+				st->debugmode = 1;
+			}else{
+				st->debugmode = 0;
+			}
+			break;
+
 	}
 }
 
@@ -222,6 +230,12 @@ int main() {
 
 	while(1) {
 		move(nrows - 1, 0);
+		for(i = 0; i<LINES-1;i++){
+			for(j = 0; j<COLS;j++){
+				mapa.dist[i][j]=16;
+			}
+		}
+		calcdist(&mapa,st.pos,0);
 		attron(COLOR_PAIR(COLOR_BLUE));
 		int nivel = st.nivel;
 		if (nivel>=5){
@@ -232,13 +246,24 @@ int main() {
 		attroff(COLOR_PAIR(COLOR_BLUE));
 
 		attron(COLOR_PAIR(COLOR_YELLOW));
-		for(i = 0; i<LINES-1;i++){
-			for(j = 0; j<COLS;j++){
-				if((i == st.pos.posX) && (j == st.pos.posY)){
-					mvaddch(i, j, '@' | A_BOLD);
-				}else mvaddch(i, j, mapa.obj[i][j] | A_BOLD);
+		if(st.debugmode==0){
+			for(i = 0; i<LINES-1;i++){
+				for(j = 0; j<COLS;j++){
+					if((i == st.pos.posX) && (j == st.pos.posY)){
+						mvaddch(i, j, '@' | A_BOLD);
+					}else mvaddch(i, j, mapa.obj[i][j] | A_BOLD);
+				}
 			}
-		}
+		}else{
+			for(i = 0; i<LINES-1;i++){
+				for(j = 0; j<COLS;j++){
+					if((i == st.pos.posX) && (j == st.pos.posY)){
+						mvaddch(i, j, '@' | A_BOLD);
+					}else mvaddch(i, j, 47+mapa.dist[i][j] | A_BOLD);
+				}
+			}
+		}calcdist(&mapa,st.pos,0);
+		
 		for(i = 0;i < inispawn;i++){
 			mvaddch(ini[i].pos.posX,ini[i].pos.posY , 'D' | A_BOLD);
 		}

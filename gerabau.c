@@ -6,7 +6,7 @@
 
 #include "gerabau.h"
 
-void gerabau(POSICAO *bau,MAP *mapabau, POSICAO max){
+void gerabau(MAP *mapabau, POSICAO max){
     int X, Y;
     time_t t;
     srand48(time(&t));
@@ -16,6 +16,5 @@ void gerabau(POSICAO *bau,MAP *mapabau, POSICAO max){
         X = rand() % max.posX;
         Y = rand() % max.posY;
     }
-    bau->posX = X;
-    bau->posY = Y;
+    mapabau->obj[X][Y] = 'M';
 }

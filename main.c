@@ -99,7 +99,7 @@ void update(PLAYER *st, MAP *mapa) {
 int main() {
 	PLAYER st;
 	INIMIGO ini[100];
-	POSICAO bau[100],saida;
+	POSICAO saida;
 	int i = 0,j = 0,k, inispawn = 10,bauspawn = 3;
 	WINDOW *wnd = initscr();
 	int ncols, nrows;
@@ -211,7 +211,7 @@ int main() {
 		mapa = fakemapa;
 	}	
 	for(i = 0;i < bauspawn;i++){
-		gerabau(&bau[i],&mapa, max);
+		gerabau(&mapa, max);
 	}
 
 	for(i = 0;i < inispawn;i++){
@@ -238,9 +238,6 @@ int main() {
 					mvaddch(i, j, '@' | A_BOLD);
 				}else mvaddch(i, j, mapa.obj[i][j] | A_BOLD);
 			}
-		}
-		for(i = 0;i < bauspawn;i++){
-			mvaddch(bau[i].posX,bau[i].posY , 'M' | A_BOLD);
 		}
 		for(i = 0;i < inispawn;i++){
 			mvaddch(ini[i].pos.posX,ini[i].pos.posY , 'D' | A_BOLD);

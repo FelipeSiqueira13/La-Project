@@ -12,34 +12,10 @@
 #include "posicao.h"
 #include "gerabau.h"
 #include "gerarinimigodem.h"
+#include "movimento.h"
+#include "obstaculo.h"
+#include "gerarsaida.h"
 
-
-/**
- *
- * Um pequeno exemplo que mostra o que se pode fazer
- */
-POSICAO do_movement_action(POSICAO st, int dx, int dy) {
-	st.posX += dx;
-	st.posY += dy;
-	return st;
-}
-
-POSICAO movement_action_enemies(POSICAO ini, int dx, int dy) {
-	ini.posX += dx;
-	ini.posY += dy;
-	return ini;
-}
-
-int obstaculo(POSICAO pos, MAP *mapa, int dx, int dy){
-	int o = 1;
-	if(dx != dy && (dx == 0 || dy == 0)){
-		if(mapa->obj[pos.posX+dx][pos.posY+dy] != '#') o = 0; 
-	}
-	else{
-		if((mapa->obj[pos.posX+dx][pos.posY+dy] != '#' && mapa->obj[pos.posX+dx][pos.posY] != '#') || (mapa->obj[pos.posX+dx][pos.posY+dy] != '#' && mapa->obj[pos.posX][pos.posY+dy] != '#')) o = 0;
-	}
-	return o;
-}
 
 void update(PLAYER *st, MAP *mapa) {
 	int key = getch();	
@@ -123,7 +99,7 @@ void update(PLAYER *st, MAP *mapa) {
 int main() {
 	PLAYER st;
 	INIMIGO ini[100];
-	POSICAO bau[100];
+	POSICAO bau[100],saida;
 	int i = 0,j = 0,k, inispawn = 10,bauspawn = 3;
 	WINDOW *wnd = initscr();
 	int ncols, nrows;
@@ -143,6 +119,8 @@ int main() {
 	init_pair(COLOR_WHITE, COLOR_WHITE, COLOR_BLACK);
     init_pair(COLOR_YELLOW, COLOR_YELLOW, COLOR_BLACK);
     init_pair(COLOR_BLUE, COLOR_BLUE, COLOR_BLACK);
+	
+	POSICAO max = {nrows, ncols};
 
 	gerar(&st);
 
@@ -232,15 +210,15 @@ int main() {
 		}
 		mapa = fakemapa;
 	}	
-
 	for(i = 0;i < bauspawn;i++){
-		gerabau(&bau[i],&mapa);
+		gerabau(&bau[i],&mapa, max);
 	}
 
 	for(i = 0;i < inispawn;i++){
-		gerarinimigodem(&ini[i],&mapa,&st);
+		gerarinimigodem(&ini[i],&mapa,&st, max);
 	}
 
+	gerarsaida(&saida,&mapa, max);
 
 	while(1) {
 		move(nrows - 1, 0);
@@ -267,6 +245,7 @@ int main() {
 		for(i = 0;i < inispawn;i++){
 			mvaddch(ini[i].pos.posX,ini[i].pos.posY , 'D' | A_BOLD);
 		}
+		mvaddch(saida.posX,saida.posY, 'S' | A_BOLD);
 		attroff(COLOR_PAIR(COLOR_YELLOW));
 		move(st.pos.posX, st.pos.posY);
 		update(&st, &mapa);
@@ -274,3 +253,4 @@ int main() {
 
 	return 0;
 }
+

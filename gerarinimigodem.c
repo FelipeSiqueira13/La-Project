@@ -6,15 +6,15 @@
 
 #include "gerarinimigodem.h"
 
-void gerarinimigodem(INIMIGO *s, MAP *r, PLAYER *t){
+void gerarinimigodem(INIMIGO *s, MAP *r, PLAYER *t, POSICAO max){
     int X, Y;
     time_t w;
     srand48(time(&w));
-    X = rand() % COLS;
-    Y = rand() % LINES;
+    X = rand() % max.posX;
+    Y = rand() % max.posY;
     while ((r->obj[X][Y]) == '#' || ((X == t->pos.posX) && (Y == t->pos.posY))){
-        X = rand() % COLS;
-        Y = rand() % LINES;
+        X = rand() % max.posX;
+        Y = rand() % max.posY;
     }
     s->pos.posX = X;
     s->pos.posY = Y;

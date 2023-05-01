@@ -1,5 +1,11 @@
 {
     "files.associations": {
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "gerarinimigodem.h": "c",
+        "movimento.h": "c",
+        "gerarsaida.h": "c",
+        "unistd.h": "c",
+        "ncurses.h": "c",
+        "gerabau.h": "c"
     }
 }

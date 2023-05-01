@@ -1,7 +1,7 @@
 #ifndef ___INIMIGO_H___
 #define ___INIMIGO_H___
 
-#include  "posicao.h"
+#include "posicao.h"
 
 typedef struct inimigo{
     POSICAO pos;

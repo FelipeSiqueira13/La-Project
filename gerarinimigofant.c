@@ -6,13 +6,13 @@
 
 #include "gerarinimigofant.h"
 
-void gerarinimigodem(INIMIGO *s, MAP *r, PLAYER *t){
+void gerarinimigofant(INIMIGO *s, MAP *r, PLAYER *t, POSICAO max){
     int X, Y;
-    X = rand() % COLS;
-    Y = rand() % LINES;
+    X = rand() % max.posX;
+    Y = rand() % max.posY;
     while ((r->obj[X][Y]) == '#' || ((X == t->pos.posX) && (Y == t->pos.posY))){
-        X = rand() % COLS;
-        Y = rand() % LINES;
+        X = rand() % max.posX;
+        Y = rand() % max.posY;
     }
     s->pos.posX = X;
     s->pos.posY = Y;

@@ -6,8 +6,14 @@
 
 #include "ativarbau.h"
 
-/*Para fazer o b]au ativer quando se passar em cima dele
-void ativarbau(PLAYER *s, POSICAO){
-    s->pos.posX
+
+void ativarbau(PLAYER *s, MAP *posbau){
+    int X;
+    int Y;
+    X = s->pos.posX;
+    Y = s->pos.posY;
+    if ('M' == posbau->obj[X][Y]){
+        novositens(s);
+        posbau->obj[X][Y] = '.';
+    }
 }
-*/

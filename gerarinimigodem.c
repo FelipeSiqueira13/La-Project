@@ -8,8 +8,6 @@
 
 void gerarinimigodem(INIMIGO *s, MAP *r, PLAYER *t, POSICAO max){
     int X, Y;
-    time_t w;
-    srand48(time(&w));
     X = rand() % max.posX;
     Y = rand() % max.posY;
     while ((r->obj[X][Y]) == '#' || ((X == t->pos.posX) && (Y == t->pos.posY))){

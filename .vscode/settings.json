@@ -6,6 +6,11 @@
         "gerarsaida.h": "c",
         "unistd.h": "c",
         "ncurses.h": "c",
-        "gerabau.h": "c"
+        "gerabau.h": "c",
+        "map.h": "c",
+        "posicao.h": "c",
+        "player.h": "c",
+        "bau.h": "c",
+        "gerarinimigofant.h": "c"
     }
 }

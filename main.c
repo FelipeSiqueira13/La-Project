@@ -15,13 +15,12 @@
 #include "movimento.h"
 #include "obstaculo.h"
 #include "gerarsaida.h"
-#include "ativarbau.h"
-#include "gerarinimigofant.h"
+#include "calcdist.h"
+
 
 void update(PLAYER *st, MAP *mapa) {
 	int key = getch();	
 	POSICAO pos = st->pos;
-	
 
 	//mvaddch(st->playerX, st->playerY, ' ');	//transforma a antiga posicao do player em vazio
 	switch(key) {
@@ -29,7 +28,6 @@ void update(PLAYER *st, MAP *mapa) {
 		case '7': 
 			if(obstaculo(pos, mapa, -1, -1) == 0)
 				st->pos = do_movement_action(pos, -1, -1);
-				ativarbau(st,mapa);
 			break;
 		
 		case KEY_UP:
@@ -37,15 +35,13 @@ void update(PLAYER *st, MAP *mapa) {
 		case 'W':
 		case '8':
 			if(obstaculo(pos, mapa, -1, +0) == 0)
-				st->pos = do_movement_action(pos, -1, +0);
-				ativarbau(st,mapa); 
+				st->pos = do_movement_action(pos, -1, +0); 
 			break;
 		
 		case KEY_A3:
 		case '9':
 			if(obstaculo(pos, mapa, -1, +1) == 0)
-				st->pos = do_movement_action(pos, -1, +1);
-				ativarbau(st,mapa); 
+				st->pos = do_movement_action(pos, -1, +1); 
 			break;
 
 		case KEY_LEFT:
@@ -53,8 +49,7 @@ void update(PLAYER *st, MAP *mapa) {
 		case 'A':
 		case '4': 
 			if(obstaculo(pos, mapa, +0, -1) == 0)
-				st->pos = do_movement_action(pos, +0, -1);
-				ativarbau(st,mapa); 
+				st->pos = do_movement_action(pos, +0, -1); 
 			break;
 		
 		case KEY_B2:
@@ -66,15 +61,13 @@ void update(PLAYER *st, MAP *mapa) {
 		case 'D':
 		case '6': 
 			if(obstaculo(pos, mapa, +0, +1) == 0)
-				st->pos = do_movement_action(pos, +0, +1);
-				ativarbau(st,mapa); 
+				st->pos = do_movement_action(pos, +0, +1); 
 			break;
 		
 		case KEY_C1:
 		case '1': 
 			if(obstaculo(pos, mapa, +1, -1) == 0)
-				st->pos = do_movement_action(pos, +1, -1);
-				ativarbau(st,mapa); 
+				st->pos = do_movement_action(pos, +1, -1); 
 			break;
 
 		case KEY_DOWN:
@@ -82,16 +75,14 @@ void update(PLAYER *st, MAP *mapa) {
 		case 'S':
 		case '2': {
 			if(obstaculo(pos, mapa, +1, +0) == 0)
-				st->pos = do_movement_action(pos, +1, +0);
-				ativarbau(st,mapa); 
+				st->pos = do_movement_action(pos, +1, +0); 
 			break;
 		}
 			
 		case KEY_C3:
 		case '3': {
 			if(obstaculo(pos, mapa, +1, +1) == 0)
-				st->pos = do_movement_action(pos, +1, +1);
-				ativarbau(st,mapa); 
+				st->pos = do_movement_action(pos, +1, +1); 
 			break;
 		}
 
@@ -102,23 +93,29 @@ void update(PLAYER *st, MAP *mapa) {
 		case 'm':
 			novositens(st);
 			break;
+		case 'n':
+			if(st->debugmode == 0){
+				st->debugmode = 1;
+			}else{
+				st->debugmode = 0;
+			}
+			break;
+
 	}
 }
 
 int main() {
-	time_t tempo;
 	PLAYER st;
 	INIMIGO ini[100];
-	INIMIGO ini2 [100];
 	POSICAO saida;
-	int i = 0,j = 0,k, inispawn = 10, bauspawn = 3, inispawn2 = 7;
+	int i = 0,j = 0,k, inispawn = 10,bauspawn = 3;
 	WINDOW *wnd = initscr();
 	int ncols, nrows;
 	getmaxyx(wnd,nrows,ncols);
 
 
 
-	srand(time(NULL));
+	srand48(time(NULL));
 	start_color();
 
 	cbreak();
@@ -134,7 +131,7 @@ int main() {
 	POSICAO max = {nrows, ncols};
 
 	gerar(&st);
-	time(&tempo);
+
 	MAP mapa, fakemapa;
 
 	for(i = 0; i<LINES;i++){
@@ -229,16 +226,16 @@ int main() {
 		gerarinimigodem(&ini[i],&mapa,&st, max);
 	}
 
-	for(i = 0;i < inispawn2;i++){
-		gerarinimigofant(&ini2[i],&mapa,&st, max);
-	}
-
 	gerarsaida(&saida,&mapa, max);
 
 	while(1) {
-		time_t novotempo;
-		time(&novotempo);
 		move(nrows - 1, 0);
+		for(i = 0; i<LINES-1;i++){
+			for(j = 0; j<COLS;j++){
+				mapa.dist[i][j]=16;
+			}
+		}
+		calcdist(&mapa,st.pos,0);
 		attron(COLOR_PAIR(COLOR_BLUE));
 		int nivel = st.nivel;
 		if (nivel>=5){
@@ -249,18 +246,26 @@ int main() {
 		attroff(COLOR_PAIR(COLOR_BLUE));
 
 		attron(COLOR_PAIR(COLOR_YELLOW));
-		for(i = 0; i<LINES-1;i++){
-			for(j = 0; j<COLS;j++){
-				if((i == st.pos.posX) && (j == st.pos.posY)){
-					mvaddch(i, j, '@' | A_BOLD);
-				}else mvaddch(i, j, mapa.obj[i][j] | A_BOLD);
+		if(st.debugmode==0){
+			for(i = 0; i<LINES-1;i++){
+				for(j = 0; j<COLS;j++){
+					if((i == st.pos.posX) && (j == st.pos.posY)){
+						mvaddch(i, j, '@' | A_BOLD);
+					}else mvaddch(i, j, mapa.obj[i][j] | A_BOLD);
+				}
 			}
-		}
+		}else{
+			for(i = 0; i<LINES-1;i++){
+				for(j = 0; j<COLS;j++){
+					if((i == st.pos.posX) && (j == st.pos.posY)){
+						mvaddch(i, j, '@' | A_BOLD);
+					}else mvaddch(i, j, 47+mapa.dist[i][j] | A_BOLD);
+				}
+			}
+		}calcdist(&mapa,st.pos,0);
+		
 		for(i = 0;i < inispawn;i++){
 			mvaddch(ini[i].pos.posX,ini[i].pos.posY , 'D' | A_BOLD);
-		}
-		for(i = 0;i < inispawn2;i++){
-			mvaddch(ini2[i].pos.posX,ini2[i].pos.posY , 'F' | A_BOLD);
 		}
 		mvaddch(saida.posX,saida.posY, 'S' | A_BOLD);
 		attroff(COLOR_PAIR(COLOR_YELLOW));

@@ -11,6 +11,7 @@
         "posicao.h": "c",
         "player.h": "c",
         "bau.h": "c",
-        "gerarinimigofant.h": "c"
+        "gerarinimigofant.h": "c",
+        "a": "cpp"
     }
 }

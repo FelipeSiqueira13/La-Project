@@ -10,6 +10,7 @@
 void gerar(PLAYER *s) {
 	s->pos.posX = 10;
 	s-> pos.posY = 10;
+	s->debugmode = 0;
 	s->nivel = 1;
 	s->vida = 50;
 	s->vidamaxima = 50;

@@ -1,5 +1,17 @@
 {
     "files.associations": {
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "gerarinimigodem.h": "c",
+        "movimento.h": "c",
+        "gerarsaida.h": "c",
+        "unistd.h": "c",
+        "ncurses.h": "c",
+        "gerabau.h": "c",
+        "map.h": "c",
+        "posicao.h": "c",
+        "player.h": "c",
+        "bau.h": "c",
+        "gerarinimigofant.h": "c",
+        "a": "cpp"
     }
 }

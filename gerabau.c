@@ -7,11 +7,10 @@
 #include "gerabau.h"
 
 void gerabau(MAP *mapabau, POSICAO max){
-    int X, Y;
+    int X = rand() % max.posX, Y = rand() % max.posY;
     time_t t;
     srand48(time(&t));
-    X = rand() % max.posX;
-    Y = rand() % max.posY;
+    
     while ((mapabau->obj[X][Y])=='#'||(mapabau->obj[X][Y])=='@'){
         X = rand() % max.posX;
         Y = rand() % max.posY;

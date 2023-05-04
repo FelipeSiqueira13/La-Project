@@ -8,10 +8,7 @@
 
 
 void ativarbau(PLAYER *s, MAP *posbau){
-    int X;
-    int Y;
-    X = s->pos.posX;
-    Y = s->pos.posY;
+    int X = s->pos.posX, Y = s->pos.posY;
     if ('M' == posbau->obj[X][Y]){
         novositens(s);
         posbau->obj[X][Y] = '.';

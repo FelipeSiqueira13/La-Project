@@ -154,8 +154,8 @@ int main() {
 
 	iniciarcontrol(&gamecontroller);
 
-	gerarmapa(bauspawn,&mapa, max);
-	
+	gerarmapa(bauspawn,&mapa,&st, max);
+
 	gerar(&st, &mapa, max);
 
 	for(i = 0;i < inispawn;i++){
@@ -167,7 +167,9 @@ int main() {
 	}
 
 	while(1) {
-		ativarsaida(bauspawn,&st, &mapa, max);
+		if(ativarsaida(bauspawn,&st, &mapa, max) ==1){
+			wclear(wnd);
+		}
 		move(nrows - 1, 0);
 		for(i = 0; i<LINES-1;i++){
 			for(j = 0; j<COLS;j++){

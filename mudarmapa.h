@@ -1,5 +1,7 @@
 #include "map.h"
 #include "mapa.h"
 #include "gerarsaida.h"
+#include "calcdist.h"
+#include "gerarmapa.h"
 
-void ativarsaida(int bauspawn,PLAYER *s,MAP *mapsaida, POSICAO max);
+int ativarsaida(int bauspawn,PLAYER *s,MAP *mapsaida, POSICAO max);

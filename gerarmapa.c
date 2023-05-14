@@ -7,17 +7,21 @@
 #include "gerarmapa.h"
 
 
-void gerarmapa(int bauspawn,MAP *mapa, POSICAO max){
+void gerarmapa(int bauspawn,MAP *mapa, PLAYER *st, POSICAO max){
     MAP fakemapa;
     int i, j, k;
 
 	for(i = 0; i<max.posX;i++){
 		mapa->obj[i][0] = '#';
 		mapa->obj[i][max.posY-1] = '#';
+		mapa->vision[i][0] = 0;
+		mapa->vision[i][max.posY-1] = 0;
 	}
 	for(j = 1; j<max.posY;j++){
 		mapa->obj[0][j] = '#';
 		mapa->obj[max.posX-2][j] = '#';
+		mapa->vision[0][j] = 0;
+		mapa->vision[max.posX-2][j] = 0;
 	}
 	for(i = 1; i<max.posX-2;i++){
 		for(j = 1; j<max.posY-1;j++){
@@ -101,4 +105,5 @@ void gerarmapa(int bauspawn,MAP *mapa, POSICAO max){
 	for(i = 0;i < bauspawn;i++){
 		gerabau(mapa, max);
 	}
+	gerarplayer(mapa,st,max);
 }

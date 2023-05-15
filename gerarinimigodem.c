@@ -17,9 +17,9 @@ void gerarinimigodem(INIMIGO *s, MAP *r, PLAYER *t, POSICAO max){
     s->pos.posX = X;
     s->pos.posY = Y;
     s->vidainimigo = 25;
-    s->defesainimigo = 12;
+    s->defesainimigo = 10;
     s->ataqueinimigo = 2;
-    s->danoinimigo = 5;
+    s->danoinimigo = ((rand() % 4) + 1 + 1);
     s->trigger = 0;
 
     if(r->obj[X][Y] == 'D') r->isenemyhere[X][Y] = 1;

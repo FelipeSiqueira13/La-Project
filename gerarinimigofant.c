@@ -19,9 +19,9 @@ void gerarinimigofant(INIMIGO *s, MAP *r, PLAYER *t, POSICAO max){
     s->pos.posX = X;
     s->pos.posY = Y;
     s->vidainimigo = 15;
-    s->defesainimigo = 15;
+    s->defesainimigo = 12;
     s->ataqueinimigo = 4;
-    s->danoinimigo = 3;
+    s->danoinimigo = ((2*(rand() % 4) + 1) + 3);
     s->trigger = 0;
 
     if(r->obj[X][Y] == 'F') r->isenemyhere[X][Y] = 1;

@@ -12,6 +12,11 @@
         "player.h": "c",
         "bau.h": "c",
         "gerarinimigofant.h": "c",
-        "a": "cpp"
-    }
+        "a": "cpp",
+        "inimigo.h": "c"
+    },
+    "vscode-pets.theme": "beach",
+    "vscode-pets.throwBallWithMouse": true,
+    "vscode-pets.petColor": "green",
+    "vscode-pets.petSize": "small"
 }

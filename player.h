@@ -12,9 +12,12 @@ typedef struct player{
 	int defesa;
 	int flechas;
 	int ataqueespada;
+	int danoespada;
 	int ataquearco;
 	int pocoesvida;
 	int aguabenta;
+	int ataquepronto;
+	int pocaopronta;
 } PLAYER;
 
 #endif

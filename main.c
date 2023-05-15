@@ -23,7 +23,13 @@
 #include "mudarmapa.h"
 #include "iniciarcontrol.h"
 #include "gamecontrol.h"
+<<<<<<< Updated upstream
 #include "movimentoinimigo.h"
+=======
+#include "combatemonstro.h"
+#include "combateplayer.h"
+#include "usarpocao.h"
+>>>>>>> Stashed changes
 
 
 void update(PLAYER *st, MAP *mapa) {
@@ -123,6 +129,14 @@ void update(PLAYER *st, MAP *mapa) {
 				st->debugmode = 0;
 			}
 			break;
+
+		case 'z':
+			st->ataquepronto = 1;
+			break;
+
+		case 'c':
+			st->pocaopronta = 1;
+			break;
 	}
 }
 
@@ -172,6 +186,7 @@ int main() {
 		if(ativarsaida(bauspawn,&st, &mapa, max) ==1){
 			wclear(wnd);
 		}
+		wclear(wnd);
 		move(nrows - 1, 0);
 		for(i = 0; i<LINES-1;i++){
 			for(j = 0; j<COLS;j++){
@@ -183,10 +198,40 @@ int main() {
 		vision(&mapa,st.pos);
 		attron(COLOR_PAIR(COLOR_BLUE));
 		int nivel = st.nivel;
-		if (nivel>=5){
-			printw("(%d, %d) %d %d Nivel:%d Vida:%d/%d Defesa:%d Flechas:%d Espada:%d Arco:%d Pocoes de Vida:%d Agua Benta:%d", st.pos.posY, st.pos.posX, nrows, ncols, st.nivel, st.vida, st.vidamaxima, st.defesa, st.flechas, st.ataqueespada, st.ataquearco, st.pocoesvida, st.aguabenta);
+		if (nivel>=3){
+			printw("(%d, %d) %d %d Nivel:%d Vida:%d/%d Defesa:%d Flechas:%d Espada:%d Arco:%d Pocoes de Vida:%d Agua Benta:%d Vida dos Inimigos:", st.pos.posY, st.pos.posX, nrows, ncols, st.nivel, st.vida, st.vidamaxima, st.defesa, st.flechas, st.ataqueespada, st.ataquearco, st.pocoesvida, st.aguabenta);
+			for (i = 0; i < inispawn; i++){
+				int iniX = ini[i].pos.posX;
+				int iniY = ini[i].pos.posY;
+				if (mapa.dist[iniX][iniY] <= 3){
+					printw(" %d", ini[i].vidainimigo);
+				} 
+			}
+
+			for (i = 0; i < inispawn2; i++){
+				int ini2X = ini2[i].pos.posX;
+				int ini2Y = ini2[i].pos.posY;
+				if (mapa.dist[ini2X][ini2Y] <= 3){
+					printw(" %d", ini2[i].vidainimigo);
+				}
+			}
 		} else{
-			printw("(%d, %d) %d %d Nivel:%d Vida:%d/%d Defesa:%d Flechas:%d Espada:%d Arco:%d Pocoes de Vida:%d ???:%d", st.pos.posY, st.pos.posX, nrows, ncols, st.nivel, st.vida, st.vidamaxima, st.defesa, st.flechas, st.ataqueespada, st.ataquearco, st.pocoesvida, st.aguabenta);
+			printw("(%d, %d) %d %d Nivel:%d Vida:%d/%d Defesa:%d Flechas:%d Espada:%d Arco:%d Pocoes de Vida:%d ???:%d Vida dos Inimigos:", st.pos.posY, st.pos.posX, nrows, ncols, st.nivel, st.vida, st.vidamaxima, st.defesa, st.flechas, st.ataqueespada, st.ataquearco, st.pocoesvida, st.aguabenta);
+			for (i = 0; i < inispawn; i++){
+				int iniX = ini[i].pos.posX;
+				int iniY = ini[i].pos.posY;
+				if (mapa.dist[iniX][iniY] <= 3 && ini[i].vidainimigo > 0){
+					printw(" %d", ini[i].vidainimigo);
+				} 
+			}
+
+			for (i = 0; i < inispawn2; i++){
+				int ini2X = ini2[i].pos.posX;
+				int ini2Y = ini2[i].pos.posY;
+				if (mapa.dist[ini2X][ini2Y] <= 3 && ini2[i].vidainimigo > 0){
+					printw(" %d", ini2[i].vidainimigo);
+				}
+			}
 		}
 		attroff(COLOR_PAIR(COLOR_BLUE));
 
@@ -230,16 +275,17 @@ int main() {
 		for(i=0;i<inispawn2;i++)isactive(&ini2[i],&mapa);
 		attron(COLOR_PAIR(COLOR_RED));
 		for(i = 0;i < inispawn;i++){
-			if(ini[i].trigger==1)
+			if(ini[i].trigger==1 && ini[i].vidainimigo > 0)
 				mvaddch(ini[i].pos.posX,ini[i].pos.posY , 'D' | A_BOLD);
 		}
 		for(i = 0;i < inispawn2;i++){
-			if(ini2[i].trigger==1)
+			if(ini2[i].trigger==1 && ini2[i].vidainimigo > 0)
 				mvaddch(ini2[i].pos.posX,ini2[i].pos.posY , 'F' | A_BOLD);
 		}
 		attroff(COLOR_PAIR(COLOR_RED));
 		move(st.pos.posX, st.pos.posY);	
 		update(&st, &mapa);
+<<<<<<< Updated upstream
 		for(i = 0;i < inispawn;i++){
 			if(ini[i].trigger==1)
 				movimento_do_inimigo_dem(&st, &ini[i], &mapa);
@@ -247,6 +293,31 @@ int main() {
 		for(i = 0;i < inispawn2;i++){
 			if(ini2[i].trigger==1)
 				movimento_do_inimigo_fant(&st, &ini2[i], &mapa);
+=======
+		for (i = 0; i < inispawn; i++){
+			int X = ini[i].pos.posX;
+    		int Y = ini[i].pos.posY;
+    		if (mapa.dist[X][Y] <= 1 && st.ataquepronto == 1){
+				ataqueplayer(&ini[i], &st);
+				st.ataquepronto = 0;
+			}
+			ataqueini(&ini[i], &st, mapa, 2);
+		}
+
+		for (i = 0; i < inispawn2; i++){
+			int X = ini2[i].pos.posX;
+    		int Y = ini2[i].pos.posY;
+    		if (mapa.dist[X][Y] <= 1 && st.ataquepronto == 1){
+				ataqueplayer(&ini2[i], &st);
+				st.ataquepronto = 0;
+			}
+			ataqueini(&ini2[i], &st, mapa, 1);
+		}
+
+		if ((st.pocaopronta == 1) && (st.vida < st.vidamaxima) && st.vida > 0){
+			usarpocao(&st);
+			st.pocaopronta = 0;
+>>>>>>> Stashed changes
 		}
 	}
 

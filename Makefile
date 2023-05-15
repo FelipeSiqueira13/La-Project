@@ -1,7 +1,11 @@
 CFLAGS=-Wall -Wextra -pedantic -O2
 LIBS=-lm -lcurses
 
+<<<<<<< Updated upstream
 jogo: main.o mapa.o movimento.o obstaculo.o bau.o gerarinimigodem.o gerabau.o gerarsaida.o ativarbau.o gerarinimigofant.o calcdist.o gerarmapa.o vision.o mudarmapa.o iniciarcontrol.o gerarplayer.o movimentoinimigo.o
+=======
+jogo: main.o mapa.o movimento.o obstaculo.o bau.o gerarinimigodem.o gerabau.o gerarsaida.o ativarbau.o gerarinimigofant.o calcdist.o gerarmapa.o vision.o mudarmapa.o iniciarcontrol.o gerarplayer.o combatemonstro.o combateplayer.o usarpocao.o
+>>>>>>> Stashed changes
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 
 clean:

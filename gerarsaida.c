@@ -10,9 +10,9 @@ void gerarsaida(MAP *mapsaida, POSICAO max){
     int X, Y;
     X = rand() % max.posX;
     Y = rand() % max.posY;
-    while ((mapsaida->obj[X][Y])=='#'){
+    while ((mapsaida->obj[X][Y]) == '#'){
         X = rand() % max.posX;
         Y = rand() % max.posY;
     }
-    mapsaida->obj[X][Y]='S';
+    mapsaida->obj[X][Y] = 'S';
 }

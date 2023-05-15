@@ -23,6 +23,7 @@
 #include "mudarmapa.h"
 #include "iniciarcontrol.h"
 #include "gamecontrol.h"
+#include "movimentoinimigo.h"
 
 
 void update(PLAYER *st, MAP *mapa) {
@@ -147,8 +148,9 @@ int main() {
     init_pair(COLOR_YELLOW, COLOR_YELLOW, COLOR_BLACK);
     init_pair(COLOR_BLUE, COLOR_BLUE, COLOR_BLACK);
 	init_pair(COLOR_RED, COLOR_RED, COLOR_BLACK);
+	init_pair(COLOR_GREEN, COLOR_GREEN, COLOR_BLACK);
 	
-	POSICAO max = {nrows, ncols};
+	POSICAO max = {nrows-1, ncols-1};
 
 	MAP mapa;
 
@@ -193,9 +195,21 @@ int main() {
 			for(i = 0; i<LINES-1;i++){
 				for(j = 0; j<COLS;j++){
 					if((mapa.vision[i][j] == 2)){
+						if(mapa.obj[i][j] == 'S'){
+						attroff(COLOR_PAIR(COLOR_YELLOW));
+						attron(COLOR_PAIR(COLOR_GREEN));
 						mvaddch(i, j, mapa.obj[i][j] | A_BOLD);
-					}else if(mapa.vision[i][j] == 1)
-						{mvaddch(i, j, mapa.obj[i][j]);
+						attroff(COLOR_PAIR(COLOR_GREEN));
+						attron(COLOR_PAIR(COLOR_YELLOW));
+					}else mvaddch(i, j, mapa.obj[i][j] | A_BOLD);
+					}else if(mapa.vision[i][j] == 1){
+						if(mapa.obj[i][j] == 'S'){
+						attroff(COLOR_PAIR(COLOR_YELLOW));
+						attron(COLOR_PAIR(COLOR_GREEN));
+						mvaddch(i, j, mapa.obj[i][j] | A_BOLD);
+						attroff(COLOR_PAIR(COLOR_GREEN));
+						attron(COLOR_PAIR(COLOR_YELLOW));
+					}else mvaddch(i, j, mapa.obj[i][j]);
 					}
 				}
 			}
@@ -226,6 +240,16 @@ int main() {
 		attroff(COLOR_PAIR(COLOR_RED));
 		move(st.pos.posX, st.pos.posY);	
 		update(&st, &mapa);
+		for(i = 0;i < inispawn;i++){
+			if(ini[i].trigger==1)
+				movimento_do_inimigo(&st, &ini[i], &mapa);
+		}
+		for(i = 0;i < inispawn2;i++){
+			if(ini2[i].trigger==1)
+				movimento_do_inimigo(&st, &ini2[i], &mapa);
+		}
+		//movimento_do_inimigo(&ini, &mapa);
+		//movimento_do_inimigo(&ini2, &mapa);
 	}
 
 	return 0;

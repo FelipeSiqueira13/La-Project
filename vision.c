@@ -24,9 +24,9 @@ void vision(MAP *mapa, POSICAO pos){
 
 void visionupdate(MAP *mapa, POSICAO max){
     int i,j;
-    for(i=0;i< max.posX; i++){
-        for(j=0;j< max.posY; j++){
-            if(mapa->vision[i][j] == 2)mapa->vision[i][j] = 1;
+    for(i = 0; i < max.posX; i++){
+        for(j = 0; j < max.posY; j++){
+            if(mapa->vision[i][j] == 2) mapa->vision[i][j] = 1;
 
         }   
     }

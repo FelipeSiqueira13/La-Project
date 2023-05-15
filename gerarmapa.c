@@ -16,12 +16,16 @@ void gerarmapa(int bauspawn,MAP *mapa, PLAYER *st, POSICAO max){
 		mapa->obj[i][max.posY-1] = '#';
 		mapa->vision[i][0] = 0;
 		mapa->vision[i][max.posY-1] = 0;
+		mapa->isenemyhere[i][0] = 0;
+		mapa->isenemyhere[i][max.posY-1] = 0;
 	}
 	for(j = 1; j<max.posY;j++){
 		mapa->obj[0][j] = '#';
 		mapa->obj[max.posX-2][j] = '#';
 		mapa->vision[0][j] = 0;
 		mapa->vision[max.posX-2][j] = 0;
+		mapa->isenemyhere[0][j] = 0;
+		mapa->isenemyhere[max.posX-2][j] = 0;
 	}
 	for(i = 1; i<max.posX-2;i++){
 		for(j = 1; j<max.posY-1;j++){

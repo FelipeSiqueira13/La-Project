@@ -13,7 +13,7 @@ void gerarinimigodem(INIMIGO *s, MAP *r, PLAYER *t, POSICAO max){
         X = rand() % max.posX;
         Y = rand() % max.posY;
     }
-    
+
     s->pos.posX = X;
     s->pos.posY = Y;
     s->vidainimigo = 25;
@@ -21,6 +21,8 @@ void gerarinimigodem(INIMIGO *s, MAP *r, PLAYER *t, POSICAO max){
     s->ataqueinimigo = 2;
     s->danoinimigo = 5;
     s->trigger = 0;
+
+    if(r->obj[X][Y] == 'D') r->isenemyhere[X][Y] = 1;
 }
 void isactive(INIMIGO *s, MAP *r){
     if(r->vision[s->pos.posX][s->pos.posY] == 2) s->trigger = 1;

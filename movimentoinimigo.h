@@ -7,5 +7,6 @@
 #include "obstaculo.h"
 #include "movimento.h"
 
-void movimento_do_inimigo(PLAYER *st, INIMIGO *s, MAP *r);
+void movimento_do_inimigo_dem(PLAYER *st, INIMIGO *s, MAP *r);
 
+void movimento_do_inimigo_fant(PLAYER *st, INIMIGO *s, MAP *r);

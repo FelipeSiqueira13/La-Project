@@ -242,14 +242,12 @@ int main() {
 		update(&st, &mapa);
 		for(i = 0;i < inispawn;i++){
 			if(ini[i].trigger==1)
-				movimento_do_inimigo(&st, &ini[i], &mapa);
+				movimento_do_inimigo_dem(&st, &ini[i], &mapa);
 		}
 		for(i = 0;i < inispawn2;i++){
 			if(ini2[i].trigger==1)
-				movimento_do_inimigo(&st, &ini2[i], &mapa);
+				movimento_do_inimigo_fant(&st, &ini2[i], &mapa);
 		}
-		//movimento_do_inimigo(&ini, &mapa);
-		//movimento_do_inimigo(&ini2, &mapa);
 	}
 
 	return 0;

@@ -12,6 +12,7 @@
         "player.h": "c",
         "bau.h": "c",
         "gerarinimigofant.h": "c",
+<<<<<<< Updated upstream
         "a": "cpp",
         "inimigo.h": "c"
     },
@@ -19,4 +20,9 @@
     "vscode-pets.throwBallWithMouse": true,
     "vscode-pets.petColor": "green",
     "vscode-pets.petSize": "small"
+=======
+        "a": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
+>>>>>>> Stashed changes
 }

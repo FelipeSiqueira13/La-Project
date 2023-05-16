@@ -9,7 +9,7 @@
 void iniciarcontrol(CONTROL *controlo){
     controlo->nivel = 1;
     controlo->bauspawn = 3;
-    controlo->qntdem = 4;
-    controlo->qntfnt = 2;
+    controlo->qntdem = 7;
+    controlo->qntfnt = 3;
     controlo->qntvmp = 0;
 }

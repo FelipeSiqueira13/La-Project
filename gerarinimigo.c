@@ -4,7 +4,7 @@
 #include <ncurses.h>
 #include <time.h>
 
-#include "gerarinimigodem.h"
+#include "gerarinimigo.h"
 
 void gerarinimigodem(INIMIGO *s, MAP *r, PLAYER *t, POSICAO max){
     int X = rand() % max.posX, Y = rand() % max.posY;
@@ -22,8 +22,26 @@ void gerarinimigodem(INIMIGO *s, MAP *r, PLAYER *t, POSICAO max){
     s->danoinimigo = ((rand() % 4) + 1 + 1);
     s->trigger = 0;
 
-    if(r->obj[X][Y] == 'D') r->isenemyhere[X][Y] = 1;
+// errado    if(r->obj[X][Y] == 'D') r->isenemyhere[X][Y] = 1;
 }
+
+void gerarinimigofant(INIMIGO *s, MAP *r, PLAYER *t, POSICAO max){
+    int X, Y;
+    X = rand() % max.posX;
+    Y = rand() % max.posY;
+    while ((r->obj[X][Y]) == '#' || ((X == t->pos.posX) && (Y == t->pos.posY))){
+        X = rand() % max.posX;
+        Y = rand() % max.posY;
+    }
+    s->pos.posX = X;
+    s->pos.posY = Y;
+    s->vidainimigo = 15;
+    s->defesainimigo = 12;
+    s->ataqueinimigo = 4;
+    s->danoinimigo = ((2*(rand() % 4) + 1) + 3);
+    s->trigger = 0;
+}
+
 void isactive(INIMIGO *s, MAP *r){
     if(r->vision[s->pos.posX][s->pos.posY] == 2) s->trigger = 1;
     else s->trigger = 0;

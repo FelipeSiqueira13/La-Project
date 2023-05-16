@@ -17,3 +17,23 @@ void novositens(PLAYER *s){
         s->pocoesvida += rand() % 3;
     }
 }
+
+void gerabau(MAP *mapabau, POSICAO max){
+    int X = rand() % max.posX, Y = rand() % max.posY;
+    time_t t;
+    srand48(time(&t));
+    
+    while ((mapabau->obj[X][Y])=='#'||(mapabau->obj[X][Y])=='@'){
+        X = rand() % max.posX;
+        Y = rand() % max.posY;
+    }
+    mapabau->obj[X][Y] = 'M';
+}
+
+void ativarbau(PLAYER *s, MAP *posbau){
+    int X = s->pos.posX, Y = s->pos.posY;
+    if ('M' == posbau->obj[X][Y]){
+        novositens(s);
+        posbau->obj[X][Y] = '.';
+    }
+}

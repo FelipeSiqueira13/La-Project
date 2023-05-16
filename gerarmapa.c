@@ -111,3 +111,57 @@ void gerarmapa(int bauspawn,MAP *mapa, PLAYER *st, POSICAO max){
 	}
 	gerarplayer(mapa,st,max);
 }
+
+void gerarplayer(MAP *mapa,PLAYER *st,POSICAO max){
+	int X, Y;
+    X = rand() % max.posX;
+    Y = rand() % max.posY;
+    while ((mapa->obj[X][Y]) == '#'){
+        X = rand() % max.posX;
+        Y = rand() % max.posY;
+    }
+    st->pos.posX = X;
+    st->pos.posY = Y;
+}
+
+void gerarsaida(MAP *mapsaida, POSICAO max){
+    int X, Y;
+    X = rand() % max.posX;
+    Y = rand() % max.posY;
+    while ((mapsaida->obj[X][Y])=='#'){
+        X = rand() % max.posX;
+        Y = rand() % max.posY;
+    }
+    mapsaida->obj[X][Y]='S';
+}
+
+int ativarsaida(CONTROL *gamecontroller,PLAYER *s,MAP *mapsaida, POSICAO max){
+    int X,Y, ret = 0;
+    X = s->pos.posX;
+    Y = s->pos.posY;
+
+    if ('S' == mapsaida->obj[X][Y]){
+		gamecontroller->qntdem += rand() % 9;
+		gamecontroller->qntfnt += rand() % 5;
+		gamecontroller->qntvmp += rand() % 4;
+        gerarmapa(gamecontroller->bauspawn,mapsaida,s, max);
+        ret = 1;
+    }
+    return ret;
+}
+
+void gerar(PLAYER *s) {
+	s->debugmode = 0;
+	s->nivel = 1;
+	s->vida = 100;
+	s->vidamaxima = 100;
+	s->defesa = 14;
+	s->flechas = 5;
+	s->ataqueespada = 1;
+	s->danoespada = 2;
+	s->ataquearco = 1;
+	s->pocoesvida = 1;
+	s->aguabenta = 0;
+	s->ataquepronto = 0;
+	s->pocaopronta = 0;
+}

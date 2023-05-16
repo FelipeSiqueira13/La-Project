@@ -12,6 +12,7 @@ int bauspawn;
 int qntdem;
 int qntfnt;
 int qntvmp;
+int carinhos;
 } CONTROL;
 
 #endif

@@ -104,12 +104,14 @@ void gerarmapa(int bauspawn,MAP *mapa, PLAYER *st, POSICAO max){
 		}
 		*mapa = fakemapa;
 	}	
-	gerarsaida(mapa, max);
+
+	POSICAO newmax = {max.posX -2,max.posY -2};
+	gerarsaida(mapa, newmax);
 
 	for(i = 0;i < bauspawn;i++){
-		gerabau(mapa, max);
+		gerabau(mapa, newmax);
 	}
-	gerarplayer(mapa,st,max);
+	gerarplayer(mapa,st,newmax);
 }
 
 void gerarplayer(MAP *mapa,PLAYER *st,POSICAO max){

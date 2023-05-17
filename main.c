@@ -14,7 +14,6 @@
 #include "calcdist.h"
 #include "gerarmapa.h"
 #include "vision.h"
-#include "iniciarcontrol.h"
 #include "gamecontrol.h"
 #include "movimentoinimigo.h"
 #include "combatemonstro.h"
@@ -113,6 +112,7 @@ void update(PLAYER *st, MAP *mapa,POSICAO max) {
 			novositens(st);
 			break;
 
+
 		case 'n':
 			if(st->debugmode == 0){
 				st->debugmode = 1;
@@ -120,7 +120,6 @@ void update(PLAYER *st, MAP *mapa,POSICAO max) {
 				st->debugmode = 0;
 			}
 			break;
-			
 		case 'z':
 		case 'Z':
 			st->ataquepronto = 1;
@@ -145,6 +144,7 @@ void update(PLAYER *st, MAP *mapa,POSICAO max) {
 	}
 }
 
+
 int main() {
 	CONTROL gamecontroller; 
 	PLAYER st;
@@ -165,14 +165,20 @@ int main() {
 	intrflush(stdscr, false);
 	keypad(stdscr, true);	//pega informacoes do teclado
 
+
+	init_color(8,415,156,0);
+	init_pair(8,8,COLOR_BLACK);
+	init_color(9,1000,400,700);
+	init_pair(9,9,COLOR_BLACK);
+	init_color(10,1000,0,0);
 	init_pair(COLOR_WHITE, COLOR_WHITE, COLOR_BLACK);
     init_pair(COLOR_YELLOW, COLOR_YELLOW, COLOR_BLACK);
     init_pair(COLOR_BLUE, COLOR_BLUE, COLOR_BLACK);
-	init_pair(COLOR_RED, COLOR_RED, COLOR_BLACK);
+	init_pair(10, 10, COLOR_BLACK);
 	init_pair(COLOR_GREEN, COLOR_GREEN, COLOR_BLACK);
 	init_pair(COLOR_MAGENTA, COLOR_MAGENTA, COLOR_BLACK);
 
-	POSICAO max = {nrows-1, ncols-1};
+	POSICAO max = {nrows-2, ncols-2};
 
 	MAP mapa;
 
@@ -195,6 +201,7 @@ int main() {
 	}
 
 	while(1) {
+		wclear(wnd);
 		if(ativarsaida(&gamecontroller,&st, &mapa, max) ==1){
 			callACard(&st, &gamecontroller,cards);
 			
@@ -209,6 +216,7 @@ int main() {
 			for(i = 0;i < gamecontroller.qntvam;i++){
 				gerarinimigovam(&inivam[i],&mapa,&st, max);
 			}
+
 		}
 		wclear(wnd);
 		move(nrows - 1, 0);
@@ -308,11 +316,13 @@ int main() {
 		mvaddch(st.pos.posX, st.pos.posY, '@' | A_BOLD);
 		attroff(COLOR_PAIR(COLOR_YELLOW));
 
+		attron(COLOR_PAIR(10));
 		for(i=0;i<gamecontroller.qntdem;i++)isactive(&inidem[i],&mapa);
 		for(i=0;i<gamecontroller.qntfnt;i++)isactive(&inifnt[i],&mapa);
+
 		for(i=0;i<gamecontroller.qntvam;i++)isactive(&inivam[i],&mapa);
 
-		attron(COLOR_PAIR(COLOR_RED));
+
 		for(i = 0;i < gamecontroller.qntdem;i++){
 			if(inidem[i].trigger==1 && inidem[i].vidainimigo > 0)
 				mvaddch(inidem[i].pos.posX,inidem[i].pos.posY , 'D' | A_BOLD);
@@ -321,12 +331,13 @@ int main() {
 			if(inifnt[i].trigger==1 && inifnt[i].vidainimigo > 0)
 				mvaddch(inifnt[i].pos.posX,inifnt[i].pos.posY , 'F' | A_BOLD);
 		}
+
 		for(i = 0;i < gamecontroller.qntvam;i++){
 			if(inivam[i].trigger==1 && inivam[i].vidainimigo > 0)
 				mvaddch(inivam[i].pos.posX,inivam[i].pos.posY , 'V' | A_BOLD);
 		}
-		attroff(COLOR_PAIR(COLOR_RED));
 
+		attroff(COLOR_PAIR(10));
 		move(st.pos.posX, st.pos.posY);	
 		update(&st, &mapa,max);
 
@@ -377,6 +388,16 @@ int main() {
 			usarpocao(&st);
 			st.pocaopronta = 0;
 
+		}
+
+
+		if(st.vida < 0){
+			    wclear(wnd);
+
+    			printw("\n\n\n\n\n\n\n\t\t YOU ARE DEAD, NOT BIG SURPRISE\n\t\t press any key to quit");
+
+				getch();
+				endwin(); exit(0); 
 		}
 
 	}

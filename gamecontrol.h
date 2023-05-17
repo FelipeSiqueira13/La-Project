@@ -14,3 +14,5 @@ int carinhos;
 
 #endif
     // inimigos, nivel atual de mapa, bau
+
+void iniciarcontrol(CONTROL *controlo);

@@ -4,7 +4,7 @@
 #include <ncurses.h>
 #include <time.h>
 
-#include "iniciarcontrol.h"
+#include "gamecontrol.h"
 
 void iniciarcontrol(CONTROL *controlo){
     controlo->nivel = 1;
@@ -12,4 +12,5 @@ void iniciarcontrol(CONTROL *controlo){
     controlo->qntdem = 7;
     controlo->qntfnt = 3;
     controlo->qntvam = 0;
+    controlo->carinhos = 0;
 }

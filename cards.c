@@ -43,7 +43,7 @@ void startcards(CARDS *cards){
 
 void callACard(PLAYER *st, CONTROL *gamecontrol,CARDS cards){
     CARD options[3];
-    for(int i = 0; i<=2; i++){
+    for(int i = 0; i<=2 ; i++){
         int raridade = rand() % 10;
         int cardn;
         if(raridade == 0){

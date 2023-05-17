@@ -8,7 +8,7 @@
 
 void calcdist(MAP *p, POSICAO pos, int acl){
     int z = p->dist[pos.posX][pos.posY];
-    if(z > acl && p->obj[pos.posX][pos.posY] == '.' && acl <= 15){
+    if(z > acl && p->obj[pos.posX][pos.posY] == '.' && acl <= 20){
         p->dist[pos.posX][pos.posY] = acl; 
         
         for(int i = -1; i < 2; i++){

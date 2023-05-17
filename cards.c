@@ -103,7 +103,7 @@ void activecard(int id,PLAYER *st, CONTROL *gamecontrol){
     if(id == 9) st->vidamaxima += 50;
     if(id == 10)st->danoespada += 7;
     if(id == 11) st->ataquearco += 5;
-    if(id == 12) gamecontrol->qntvmp -= 3;
+    if(id == 12) gamecontrol->qntvam -= 3;
     if(id == 13) st->aguabenta += 2;
 
 }

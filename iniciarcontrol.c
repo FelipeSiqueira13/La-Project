@@ -11,5 +11,5 @@ void iniciarcontrol(CONTROL *controlo){
     controlo->bauspawn = 3;
     controlo->qntdem = 7;
     controlo->qntfnt = 3;
-    controlo->qntvmp = 0;
+    controlo->qntvam = 0;
 }

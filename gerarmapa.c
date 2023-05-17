@@ -143,7 +143,7 @@ int ativarsaida(CONTROL *gamecontroller,PLAYER *s,MAP *mapsaida, POSICAO max){
     if ('S' == mapsaida->obj[X][Y]){
 		gamecontroller->qntdem += rand() % 9;
 		gamecontroller->qntfnt += rand() % 5;
-		gamecontroller->qntvmp += rand() % 4;
+		gamecontroller->qntvam += rand() % 4;
         gerarmapa(gamecontroller->bauspawn,mapsaida,s, max);
         ret = 1;
     }

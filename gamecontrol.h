@@ -4,14 +4,11 @@
 #include "inimigo.h"
 
 typedef struct control{
-INIMIGO inimigodem[100];
-INIMIGO inimigodfnt[100];
-INIMIGO inimigovmp[100];
 int nivel;
 int bauspawn;
 int qntdem;
 int qntfnt;
-int qntvmp;
+int qntvam;
 int carinhos;
 } CONTROL;
 

@@ -120,18 +120,23 @@ void update(PLAYER *st, MAP *mapa,POSICAO max) {
 				st->debugmode = 0;
 			}
 			break;
+			
 		case 'z':
+		case 'Z':
 			st->ataquepronto = 1;
 			break;
 
 		case 'c':
+		case 'C':
 			st->pocaopronta = 1;
 			break;
+
 		case 'p':
+		case 'P':
 			for(int i = 0; i< max.posX ;i++){
 				for(int j = 0; j<max.posY;j++){
 					if((mapa->obj[i][j] == 'S')){
-						mvaddch(i, j, 'S');
+						mvaddch(i, j, mapa->obj[i][j] | A_BOLD);
 					}
 				}
 			}
@@ -143,7 +148,7 @@ void update(PLAYER *st, MAP *mapa,POSICAO max) {
 int main() {
 	CONTROL gamecontroller; 
 	PLAYER st;
-	INIMIGO inidem[100],inifnt [100];
+	INIMIGO inidem[100],inifnt [100], inivam[100];
 	CARDS cards;
 	startcards(&cards);
 	int i = 0, j = 0;
@@ -160,10 +165,6 @@ int main() {
 	intrflush(stdscr, false);
 	keypad(stdscr, true);	//pega informacoes do teclado
 
-	init_color(8,415,156,0);
-	init_pair(8,8,COLOR_BLACK);
-	init_color(9,1000,400,700);
-	init_pair(9,9,COLOR_BLACK);
 	init_pair(COLOR_WHITE, COLOR_WHITE, COLOR_BLACK);
     init_pair(COLOR_YELLOW, COLOR_YELLOW, COLOR_BLACK);
     init_pair(COLOR_BLUE, COLOR_BLUE, COLOR_BLACK);
@@ -189,9 +190,12 @@ int main() {
 		gerarinimigofant(&inifnt[i],&mapa,&st, max);
 	}
 
+	for(i = 0;i < gamecontroller.qntvam;i++){
+		gerarinimigovam(&inivam[i],&mapa,&st, max);
+	}
+
 	while(1) {
 		if(ativarsaida(&gamecontroller,&st, &mapa, max) ==1){
-			wclear(wnd);
 			callACard(&st, &gamecontroller,cards);
 			
 			for(i = 0;i < gamecontroller.qntdem;i++){
@@ -201,7 +205,10 @@ int main() {
 			for(i = 0;i < gamecontroller.qntfnt;i++){
 				gerarinimigofant(&inifnt[i],&mapa,&st, max);
 			}
-			wclear(wnd);
+
+			for(i = 0;i < gamecontroller.qntvam;i++){
+				gerarinimigovam(&inivam[i],&mapa,&st, max);
+			}
 		}
 		wclear(wnd);
 		move(nrows - 1, 0);
@@ -232,6 +239,14 @@ int main() {
 					printw(" %d", inifnt[i].vidainimigo);
 				}
 			}
+
+			for (i = 0; i < gamecontroller.qntvam; i++){
+				int iniX = inivam[i].pos.posX;
+				int iniY = inivam[i].pos.posY;
+				if (mapa.dist[iniX][iniY] <= 3){
+					printw(" %d", inivam[i].vidainimigo);
+				} 
+			}
 		} else{
 			printw("(%d, %d) %d %d Nivel:%d Vida:%d/%d Defesa:%d Flechas:%d Espada:%d Arco:%d Pocoes de Vida:%d ???:%d Vida dos Inimigos:", st.pos.posY, st.pos.posX, nrows, ncols, st.nivel, st.vida, st.vidamaxima, st.defesa, st.flechas, st.ataqueespada, st.ataquearco, st.pocoesvida, st.aguabenta);
 			for (i = 0; i < gamecontroller.qntdem; i++){
@@ -249,49 +264,54 @@ int main() {
 					printw(" %d", inifnt[i].vidainimigo);
 				}
 			}
+
+			for (i = 0; i < gamecontroller.qntvam; i++){
+				int iniX = inivam[i].pos.posX;
+				int iniY = inivam[i].pos.posY;
+				if (mapa.dist[iniX][iniY] <= 3 && inivam[i].vidainimigo > 0){
+					printw(" %d", inivam[i].vidainimigo);
+				} 
+			}
 		}
 		attroff(COLOR_PAIR(COLOR_BLUE));
 
-		for(i = 0; i<LINES-1;i++){
-			for(j = 0; j<COLS;j++){
-				if((mapa.vision[i][j] == 2)){
-					if(mapa.obj[i][j] == 'S'){
-						attron(COLOR_PAIR(COLOR_GREEN));
-						mvaddch(i, j, mapa.obj[i][j] | A_BOLD);
-						attroff(COLOR_PAIR(COLOR_GREEN));
-					}else if(mapa.obj[i][j] == 'M') {
-						attron(COLOR_PAIR(8));
-						mvaddch(i, j, mapa.obj[i][j] | A_BOLD);
-						attroff(COLOR_PAIR(8));				
-					}else{
-						attron(COLOR_PAIR(COLOR_YELLOW));
-						mvaddch(i, j, mapa.obj[i][j] | A_BOLD);
-						attroff(COLOR_PAIR(COLOR_YELLOW));
-					}
-				}else if(mapa.vision[i][j] == 1){
+		attron(COLOR_PAIR(COLOR_YELLOW));
+		if(st.debugmode==0){
+			for(i = 0; i<LINES-1;i++){
+				for(j = 0; j<COLS;j++){
+					if((mapa.vision[i][j] == 2)){
 						if(mapa.obj[i][j] == 'S'){
+						attroff(COLOR_PAIR(COLOR_YELLOW));
+						attron(COLOR_PAIR(COLOR_GREEN));
+						mvaddch(i, j, mapa.obj[i][j] | A_BOLD);
+						attroff(COLOR_PAIR(COLOR_GREEN));
+						attron(COLOR_PAIR(COLOR_YELLOW));
+					}else mvaddch(i, j, mapa.obj[i][j] | A_BOLD);
+					}else if(mapa.vision[i][j] == 1){
+						if(mapa.obj[i][j] == 'S'){
+						attroff(COLOR_PAIR(COLOR_YELLOW));
 						attron(COLOR_PAIR(COLOR_GREEN));
 						mvaddch(i, j, mapa.obj[i][j]);
 						attroff(COLOR_PAIR(COLOR_GREEN));
-					}else if(mapa.obj[i][j] == 'M') {
-						attron(COLOR_PAIR(8));
-						mvaddch(i, j, mapa.obj[i][j]);
-						attroff(COLOR_PAIR(8));			
-					}else{
 						attron(COLOR_PAIR(COLOR_YELLOW));
-						mvaddch(i, j, mapa.obj[i][j]);
-						attroff(COLOR_PAIR(COLOR_YELLOW));
-					} 
+					}else mvaddch(i, j, mapa.obj[i][j]);
+					}
+				}
+			}
+		}else{
+			for(i = 0; i<LINES-1;i++){
+				for(j = 0; j<COLS;j++){
+					mvaddch(i, j, (47+mapa.dist[i][j]) | A_BOLD);
 				}
 			}
 		}
-
-		attron(COLOR_PAIR(9));
 		mvaddch(st.pos.posX, st.pos.posY, '@' | A_BOLD);
-		attroff(COLOR_PAIR(9));
+		attroff(COLOR_PAIR(COLOR_YELLOW));
 
 		for(i=0;i<gamecontroller.qntdem;i++)isactive(&inidem[i],&mapa);
 		for(i=0;i<gamecontroller.qntfnt;i++)isactive(&inifnt[i],&mapa);
+		for(i=0;i<gamecontroller.qntvam;i++)isactive(&inivam[i],&mapa);
+
 		attron(COLOR_PAIR(COLOR_RED));
 		for(i = 0;i < gamecontroller.qntdem;i++){
 			if(inidem[i].trigger==1 && inidem[i].vidainimigo > 0)
@@ -301,28 +321,39 @@ int main() {
 			if(inifnt[i].trigger==1 && inifnt[i].vidainimigo > 0)
 				mvaddch(inifnt[i].pos.posX,inifnt[i].pos.posY , 'F' | A_BOLD);
 		}
+		for(i = 0;i < gamecontroller.qntvam;i++){
+			if(inivam[i].trigger==1 && inivam[i].vidainimigo > 0)
+				mvaddch(inivam[i].pos.posX,inivam[i].pos.posY , 'V' | A_BOLD);
+		}
 		attroff(COLOR_PAIR(COLOR_RED));
+
 		move(st.pos.posX, st.pos.posY);	
 		update(&st, &mapa,max);
 
 		for(i = 0;i < gamecontroller.qntdem;i++){
 			if(inidem[i].trigger==1)
-				movimento_do_inimigo_dem(/*&st,*/ &inidem[i], &mapa);
+				movimento_do_inimigo(&inidem[i], &mapa);
 		}
 		for(i = 0;i < gamecontroller.qntfnt;i++){
 			if(inifnt[i].trigger==1)
-				movimento_do_inimigo_fant(/*&st,*/ &inifnt[i], &mapa);
+				movimento_do_inimigo(&inifnt[i], &mapa);
 		}
+		for(i = 0;i < gamecontroller.qntvam;i++){
+			if(inivam[i].trigger==1){
+				movimento_do_inimigo(&inivam[i], &mapa);
+				movimento_do_inimigo(&inivam[i], &mapa);
+			}	
+		}
+
 		for (i = 0; i < gamecontroller.qntdem; i++){
 			int X = inidem[i].pos.posX;
     		int Y = inidem[i].pos.posY;
     		if (mapa.dist[X][Y] <= 1 && st.ataquepronto == 1 && inidem[i].vidainimigo>0){
-				ataqueplayer(&inidem[i], &st, &mapa);
+				ataqueplayer(&inidem[i], &st,&mapa);
 				st.ataquepronto = 0;
 			}
 			ataqueini(&inidem[i], &st, mapa, 2);
 		}
-
 		for (i = 0; i < gamecontroller.qntfnt; i++){
 			int X = inifnt[i].pos.posX;
     		int Y = inifnt[i].pos.posY;
@@ -332,20 +363,20 @@ int main() {
 			}
 			ataqueini(&inifnt[i], &st, mapa, 1);
 		}
+		for (i = 0; i < gamecontroller.qntvam; i++){
+			int X = inivam[i].pos.posX;
+    		int Y = inivam[i].pos.posY;
+    		if (mapa.dist[X][Y] <= 1 && st.ataquepronto == 1 && inivam[i].vidainimigo>0){
+				ataqueplayer(&inivam[i], &st,&mapa);
+				st.ataquepronto = 0;
+			}
+			ataqueini(&inivam[i], &st, mapa, 2);
+		}
 
 		if ((st.pocaopronta == 1) && (st.vida < st.vidamaxima) && st.vida > 0){
 			usarpocao(&st);
 			st.pocaopronta = 0;
 
-		}
-
-		for(i = 0;i < gamecontroller.qntdem;i++){
-			if(inidem[i].trigger==1)
-				mvaddch(inidem[i].pos.posX,inidem[i].pos.posY , 'D' | A_BOLD);
-		}
-		for(i = 0;i < gamecontroller.qntfnt;i++){
-			if(inifnt[i].trigger==1)
-				mvaddch(inifnt[i].pos.posX,inifnt[i].pos.posY , 'F' | A_BOLD);
 		}
 
 	}

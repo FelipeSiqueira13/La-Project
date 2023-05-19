@@ -8,8 +8,8 @@
 
 void gerarinimigodem(INIMIGO *s, MAP *r, PLAYER *t, POSICAO max){
     int X = rand() % max.posX, Y = rand() % max.posY;
-
-    while ((r->obj[X][Y]) == '#' || ((X == t->pos.posX) && (Y == t->pos.posY))){
+    
+    while ((r->obj[X][Y]) == '#'  ||  ((X == t->pos.posX) && (Y == t->pos.posY))){
         X = rand() % max.posX;
         Y = rand() % max.posY;
     }
@@ -27,7 +27,7 @@ void gerarinimigodem(INIMIGO *s, MAP *r, PLAYER *t, POSICAO max){
 void gerarinimigofant(INIMIGO *s, MAP *r, PLAYER *t, POSICAO max){
     int X = rand() % max.posX, Y = rand() % max.posY;
     
-    while ((r->obj[X][Y]) == '#' || ((X == t->pos.posX) && (Y == t->pos.posY))){
+    while ((r->obj[X][Y]) == '#'  ||  ((X == t->pos.posX) && (Y == t->pos.posY))){
         X = rand() % max.posX;
         Y = rand() % max.posY;
     }
@@ -45,17 +45,17 @@ void gerarinimigofant(INIMIGO *s, MAP *r, PLAYER *t, POSICAO max){
 void gerarinimigovam(INIMIGO *s, MAP *r, PLAYER *t, POSICAO max){
     int X = rand() % max.posX, Y = rand() % max.posY;
 
-    while ((r->obj[X][Y]) == '#' || ((X == t->pos.posX) && (Y == t->pos.posY))){
+    while ((r->obj[X][Y]) == '#'  ||  ((X == t->pos.posX) && (Y == t->pos.posY))){
         X = rand() % max.posX;
         Y = rand() % max.posY;
     }
 
     s->pos.posX = X;
     s->pos.posY = Y;
-    s->vidainimigo = 50;
-    s->defesainimigo = 8;
-    s->ataqueinimigo = 4;
-    s->danoinimigo = ((rand() % 4) + 1 + 3);
+    s->vidainimigo = 42;
+    s->defesainimigo = 6;
+    s->ataqueinimigo = 2;
+    s->danoinimigo = ((rand() % 4) + 3);
     s->trigger = 0;
     s->lastnear = 0;
 }

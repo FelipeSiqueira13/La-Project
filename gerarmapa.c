@@ -7,11 +7,11 @@
 #include "gerarmapa.h"
 
 
-void gerarmapa(int bauspawn,MAP *mapa, PLAYER *st, POSICAO max){
+void gerarmapa(int bauspawn, MAP *mapa, PLAYER *st, POSICAO max){
     MAP fakemapa;
     int i, j, k;
 
-	for(i = 0; i<max.posX;i++){
+	for(i = 0; i < max.posX; i++){
 		mapa->obj[i][0] = '#';
 		mapa->obj[i][max.posY-1] = '#';
 		mapa->vision[i][0] = 0;
@@ -19,7 +19,7 @@ void gerarmapa(int bauspawn,MAP *mapa, PLAYER *st, POSICAO max){
 		mapa->isenemyhere[i][0] = 0;
 		mapa->isenemyhere[i][max.posY-1] = 0;
 	}
-	for(j = 1; j<max.posY;j++){
+	for(j = 1; j < max.posY; j++){
 		mapa->obj[0][j] = '#';
 		mapa->obj[max.posX-2][j] = '#';
 		mapa->vision[0][j] = 0;
@@ -27,8 +27,8 @@ void gerarmapa(int bauspawn,MAP *mapa, PLAYER *st, POSICAO max){
 		mapa->isenemyhere[0][j] = 0;
 		mapa->isenemyhere[max.posX-2][j] = 0;
 	}
-	for(i = 1; i<max.posX-2;i++){
-		for(j = 1; j<max.posY-1;j++){
+	for(i = 1; i < max.posX-2; i++){
+		for(j = 1; j < max.posY-1; j++){
 			mapa->vision[i][j] = 0;
 			if( rand() % 100 > 40){
 			mapa->obj[i][j] = '.';
@@ -38,9 +38,9 @@ void gerarmapa(int bauspawn,MAP *mapa, PLAYER *st, POSICAO max){
 	fakemapa = *mapa;
 
 	int cont, cont2;
-	for(k=0;k < 4; k++){
-		for(i = 2; i<max.posX-2;i++){
-			for(j = 2; j<max.posY-1;j++){
+	for(k = 0;k < 4; k++){
+		for(i = 2; i < max.posX-2; i++){
+			for(j = 2; j < max.posY-1; j++){
 				cont = 0;
 				cont2 = 0;
 				if(mapa->obj[i+1][j] == '#') cont++;
@@ -80,9 +80,9 @@ void gerarmapa(int bauspawn,MAP *mapa, PLAYER *st, POSICAO max){
 		*mapa = fakemapa;
 	}
 
-	for(k=0;k < 3; k++){
-		for(i = 2; i<max.posX-2;i++){
-			for(j = 2; j<max.posY-1;j++){
+	for(k = 0;k < 3; k++){
+		for(i = 2; i < max.posX-2; i++){
+			for(j = 2; j < max.posY-1; j++){
 				cont = 0;
 				if(mapa->obj[i+1][j] == '#') cont++;
 				if(mapa->obj[i+1][j-1] == '#') cont++;
@@ -94,30 +94,24 @@ void gerarmapa(int bauspawn,MAP *mapa, PLAYER *st, POSICAO max){
 				if(mapa->obj[i-1][j-1] == '#') cont++;
 				if(mapa->obj[i-1][j+1] == '#') cont++;
 
-				if(cont >= 5){
-					
-				}else{
-					fakemapa.obj[i][j] = '.';
-				}
-
+				if(cont >= 5){}
+				else fakemapa.obj[i][j] = '.';
 			}
 		}
 		*mapa = fakemapa;
 	}	
 
-	POSICAO newmax = {max.posX -2,max.posY -2};
+	POSICAO newmax = {max.posX-2, max.posY-2};
 	gerarsaida(mapa, newmax);
 
-	for(i = 0;i < bauspawn;i++){
+	for(i = 0; i < bauspawn; i++){
 		gerabau(mapa, newmax);
 	}
-	gerarplayer(mapa,st,newmax);
+	gerarplayer(mapa, st, newmax);
 }
 
-void gerarplayer(MAP *mapa,PLAYER *st,POSICAO max){
-	int X, Y;
-    X = rand() % max.posX;
-    Y = rand() % max.posY;
+void gerarplayer(MAP *mapa, PLAYER *st, POSICAO max){
+	int X = rand() % max.posX, Y = rand() % max.posY;
     while ((mapa->obj[X][Y]) == '#'){
         X = rand() % max.posX;
         Y = rand() % max.posY;
@@ -127,26 +121,21 @@ void gerarplayer(MAP *mapa,PLAYER *st,POSICAO max){
 }
 
 void gerarsaida(MAP *mapsaida, POSICAO max){
-    int X, Y;
-    X = rand() % max.posX;
-    Y = rand() % max.posY;
-    while ((mapsaida->obj[X][Y])=='#'){
+    int X = rand() % max.posX, Y = rand() % max.posY;
+    while ((mapsaida->obj[X][Y]) == '#'){
         X = rand() % max.posX;
         Y = rand() % max.posY;
     }
-    mapsaida->obj[X][Y]='S';
+    mapsaida->obj[X][Y] = 'S';
 }
 
-int ativarsaida(CONTROL *gamecontroller,PLAYER *s,MAP *mapsaida, POSICAO max){
-    int X,Y, ret = 0;
-    X = s->pos.posX;
-    Y = s->pos.posY;
-
+int ativarsaida(CONTROL *gamecontroller, PLAYER *s, MAP *mapsaida, POSICAO max){
+    int X = s->pos.posX, Y = s->pos.posY, ret = 0;
     if ('S' == mapsaida->obj[X][Y]){
 		gamecontroller->qntdem += rand() % 9;
 		gamecontroller->qntfnt += rand() % 5;
 		gamecontroller->qntvam += rand() % 4;
-        gerarmapa(gamecontroller->bauspawn,mapsaida,s, max);
+        gerarmapa(gamecontroller->bauspawn, mapsaida, s, max);
         ret = 1;
     }
     return ret;

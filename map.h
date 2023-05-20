@@ -6,6 +6,6 @@ typedef struct map{
 	int dist[500][500];
 	int vision[500][500]; //0 = nao visto, 1 = visto mas n agr, 2 = esta vendo agr
 	int isenemyhere[500][500];
-} MAP;
+}MAP;
 
 #endif

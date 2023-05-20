@@ -4,6 +4,6 @@
 typedef struct posicao{
 	int posX;
 	int posY;
-} POSICAO;
+}POSICAO;
 
 #endif

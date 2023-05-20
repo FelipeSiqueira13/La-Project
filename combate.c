@@ -4,7 +4,16 @@
 #include <ncurses.h>
 #include <time.h>
 
-#include "combateplayer.h"
+#include "combate.h"
+
+void ataqueini(INIMIGO *s, PLAYER *r, MAP mapa, int distrange){
+    int X = s->pos.posX, Y = s->pos.posY;
+    if (mapa.dist[X][Y] <= distrange){
+        if (s->vidainimigo > 0  &&  ((rand()%21) + s->ataqueinimigo) >= r->defesa){
+            r->vida -= s->danoinimigo;
+        }
+    }
+}
 
 void ataqueplayer(INIMIGO *s, PLAYER *r, MAP *mapa){
     if (s->vidainimigo > 0 && ((rand()%21) + r->ataqueespada) >= s->defesainimigo){

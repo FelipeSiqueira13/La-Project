@@ -16,8 +16,7 @@
 #include "vision.h"
 #include "gamecontrol.h"
 #include "movimentoinimigo.h"
-#include "combatemonstro.h"
-#include "combateplayer.h"
+#include "combate.h"
 #include "usarpocao.h"
 #include "cards.h"
 
@@ -210,8 +209,8 @@ int main() {
 	}
 
 	while(1) {
-		wclear(wnd);
 		if(ativarsaida(&gamecontroller,&st, &mapa, max) ==1){
+			wclear(wnd);
 			callACard(&st, &gamecontroller,cards);
 			
 			for(i = 0;i < gamecontroller.qntdem;i++){
@@ -419,4 +418,3 @@ int main() {
 	}
 	return 0;
 }
-

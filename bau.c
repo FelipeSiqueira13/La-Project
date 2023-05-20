@@ -23,7 +23,7 @@ void gerabau(MAP *mapabau, POSICAO max){
     time_t t;
     srand48(time(&t));
     
-    while ((mapabau->obj[X][Y])=='#'||(mapabau->obj[X][Y])=='@'){
+    while ((mapabau->obj[X][Y]) == '#'  ||  (mapabau->obj[X][Y]) == '@'){
         X = rand() % max.posX;
         Y = rand() % max.posY;
     }

@@ -21,7 +21,7 @@ void gerarinimigodem(INIMIGO *s, MAP *r, PLAYER *t, POSICAO max){
     s->ataqueinimigo = 2;
     s->danoinimigo = ((rand() % 4) + 1 + 1);
     s->trigger = 0;
-    s->lastnear = 0;
+    s->lastnear = 0;    
 }
 
 void gerarinimigofant(INIMIGO *s, MAP *r, PLAYER *t, POSICAO max){

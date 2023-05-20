@@ -18,6 +18,8 @@ void gerarmapa(int bauspawn,MAP *mapa, PLAYER *st, POSICAO max){
 		mapa->vision[i][max.posY-1] = 0;
 		mapa->isenemyhere[i][0] = 0;
 		mapa->isenemyhere[i][max.posY-1] = 0;
+		mapa->dist[i][0] = 0;
+		mapa->dist[i][max.posY-1] = 0;
 	}
 	for(j = 1; j<max.posY;j++){
 		mapa->obj[0][j] = '#';
@@ -26,10 +28,13 @@ void gerarmapa(int bauspawn,MAP *mapa, PLAYER *st, POSICAO max){
 		mapa->vision[max.posX-2][j] = 0;
 		mapa->isenemyhere[0][j] = 0;
 		mapa->isenemyhere[max.posX-2][j] = 0;
+		mapa->dist[0][j] = 0;
+		mapa->dist[max.posX-2][j] = 0;
 	}
 	for(i = 1; i<max.posX-2;i++){
 		for(j = 1; j<max.posY-1;j++){
 			mapa->vision[i][j] = 0;
+			mapa->dist[i][j] = 0;
 			if( rand() % 100 > 40){
 			mapa->obj[i][j] = '.';
 			}else mapa->obj[i][j] = '#';
@@ -105,6 +110,7 @@ void gerarmapa(int bauspawn,MAP *mapa, PLAYER *st, POSICAO max){
 		*mapa = fakemapa;
 	}	
 
+
 	POSICAO newmax = {max.posX -2,max.posY -2};
 	gerarsaida(mapa, newmax);
 
@@ -162,6 +168,7 @@ void gerar(PLAYER *s) {
 	s->ataqueespada = 1;
 	s->danoespada = 2;
 	s->ataquearco = 1;
+	s->danoarco = 3;
 	s->pocoesvida = 1;
 	s->aguabenta = 0;
 	s->ataquepronto = 0;

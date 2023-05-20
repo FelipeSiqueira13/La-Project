@@ -19,9 +19,9 @@ void startcards(CARDS *cards){
     cards->commum[4].id = 4;
     strcpy(cards->commum[4].texto,"aumentar o numero de poçoes de cura");
     cards->commum[5].id = 5;
-    strcpy(cards->commum[5].texto,"aumentar o dano do player");
+    strcpy(cards->commum[5].texto,"aumentar o dano do heroi");
     cards->commum[6].id = 6;
-    strcpy(cards->commum[6].texto,"aumenta a defesa do player");
+    strcpy(cards->commum[6].texto,"aumenta a defesa do heroi");
     cards->commum[7].id = 7;
     strcpy(cards->commum[7].texto,"fazer carinho em um cachorro (voce nao ganha nada fazendo isso, confia)");
     cards->commum[8].id = 8;
@@ -30,7 +30,7 @@ void startcards(CARDS *cards){
     cards->rare[0].id = 9;
     strcpy(cards->rare[0].texto,"aumentar a vida maxima"); 
     cards->rare[1].id = 10;
-    strcpy(cards->rare[1].texto,"melhorar arma"); 
+    strcpy(cards->rare[1].texto,"aumenta bastante o ataque"); 
     cards->rare[2].id = 11;
     strcpy(cards->rare[2].texto,"melhorar arco"); 
     cards->rare[3].id = 12;
@@ -96,7 +96,7 @@ void activecard(int id,PLAYER *st, CONTROL *gamecontrol){
     if(id == 2) st->vida = st->vidamaxima;
     if(id == 3) st->flechas += 15;
     if(id == 4) st->pocoesvida += 3;
-    if(id == 5) st->danoespada += 2;
+    if(id == 5) st->ataqueespada += 2;
     if(id == 6) st->defesa += 1;
     if(id == 7) gamecontrol->carinhos++;
     if(id == 8) gamecontrol->qntfnt -= 5;

@@ -22,7 +22,7 @@
 #include "cards.h"
 
 
-void update(PLAYER *st, MAP *mapa,POSICAO max) {
+void update(PLAYER *st, MAP *mapa,CONTROL *gamecontroller,POSICAO max) {
 	int key = getch();	
 	POSICAO pos = st->pos;
 
@@ -139,6 +139,11 @@ void update(PLAYER *st, MAP *mapa,POSICAO max) {
 					}
 				}
 			}
+			break;
+
+		case 'o':
+		case 'O':
+			gamecontroller->carinhos ++;
 			break;
 		
 	}
@@ -327,9 +332,7 @@ int main() {
 		attron(COLOR_PAIR(10));
 		for(i=0;i<gamecontroller.qntdem;i++)isactive(&inidem[i],&mapa);
 		for(i=0;i<gamecontroller.qntfnt;i++)isactive(&inifnt[i],&mapa);
-
 		for(i=0;i<gamecontroller.qntvam;i++)isactive(&inivam[i],&mapa);
-
 
 		for(i = 0;i < gamecontroller.qntdem;i++){
 			if(inidem[i].trigger==1 && inidem[i].vidainimigo > 0)
@@ -347,7 +350,7 @@ int main() {
 
 		attroff(COLOR_PAIR(10));
 		move(st.pos.posX, st.pos.posY);	
-		update(&st, &mapa,max);
+		update(&st, &mapa, &gamecontroller,max);
 
 		for(i = 0;i < gamecontroller.qntdem;i++){
 			if(inidem[i].trigger==1)
@@ -399,17 +402,21 @@ int main() {
 		}
 
 
-		if(st.vida < 0){
+		if(st.vida < 0 && st.debugmode == 1){
 			    wclear(wnd);
-
     			printw("\n\n\n\n\n\n\n\t\t YOU ARE DEAD, NOT BIG SURPRISE\n\t\t press any key to quit");
-
 				getch();
 				endwin(); exit(0); 
 		}
-
+		if(gamecontroller.carinhos > 9){
+				wclear(wnd);
+				attron(COLOR_PAIR(9));
+    			printw("\n\n\n\n\n\n\n\t\t     ()  ()  ()  () \n\t\t     ||  ||  ||  || \n\t\t{~*~*~*~*~*~*~*~*~*~*~} \n\t\t@@@@@@@@@@@@@@@@@@@@@@@ \n\t\t{*~*~*~*~*~*~*~*~*~*~*} \n\t\t@@@@@@@@@@@@@@@@@@@@@@@ \n\t\t{~*~*~*~*~*~*~*~*~*~*~} \n\t\t{*~*~*~*~*~*~*~*~*~*~*} \n\t\t{~*~*~*~*~*~*~*~*~*~*~}\n\t\t@@@@@@@@@@@@@@@@@@@@@@@\n\t\tfrom the gays and doces team, congrats for wining the game \n\t\t\t\tpress any key to quit");
+				attroff(COLOR_PAIR(9));
+				getch();
+				endwin(); exit(0); 
+		}
 	}
-
 	return 0;
 }
 

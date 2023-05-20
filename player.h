@@ -14,6 +14,7 @@ typedef struct player{
 	int ataqueespada;
 	int danoespada;
 	int ataquearco;
+	int danoarco;
 	int pocoesvida;
 	int aguabenta;
 	int ataquepronto;

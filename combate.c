@@ -23,3 +23,15 @@ void ataqueplayer(INIMIGO *s, PLAYER *r, MAP *mapa){
         }
     }
 }
+
+void ataqueplayerdistancia(INIMIGO *s, PLAYER *r, MAP *mapa){
+    if (s->vidainimigo > 0 && r->flechas > 0 && s->trigger == 1 && ((rand()%21) + r->ataquearco) >= s->defesainimigo){
+        s->vidainimigo -= ((2*(rand() % 6) + 2) + r->danoarco);
+        if(s->vidainimigo <= 0){
+            mapa->isenemyhere[s->pos.posX][s->pos.posY] = 0;
+        }
+    }
+    if (r->flechas > 0){
+        r->flechas -= 1;
+    }
+}

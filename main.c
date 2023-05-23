@@ -124,6 +124,11 @@ void update(PLAYER *st, MAP *mapa,CONTROL *gamecontroller,POSICAO max) {
 			st->ataquepronto = 1;
 			break;
 
+		case 'x':
+		case 'X':
+			st->ataquedistpronto = 1;
+			break;
+
 		case 'c':
 		case 'C':
 			st->pocaopronta = 1;
@@ -243,7 +248,7 @@ int main() {
 			for (i = 0; i < gamecontroller.qntdem; i++){
 				int iniX = inidem[i].pos.posX;
 				int iniY = inidem[i].pos.posY;
-				if (mapa.dist[iniX][iniY] <= 3){
+				if (mapa.dist[iniX][iniY] <= 10){
 					printw(" %d", inidem[i].vidainimigo);
 				} 
 			}
@@ -251,7 +256,7 @@ int main() {
 			for (i = 0; i < gamecontroller.qntfnt; i++){
 				int ini2X = inifnt[i].pos.posX;
 				int ini2Y = inifnt[i].pos.posY;
-				if (mapa.dist[ini2X][ini2Y] <= 3){
+				if (mapa.dist[ini2X][ini2Y] <= 10){
 					printw(" %d", inifnt[i].vidainimigo);
 				}
 			}
@@ -259,7 +264,7 @@ int main() {
 			for (i = 0; i < gamecontroller.qntvam; i++){
 				int iniX = inivam[i].pos.posX;
 				int iniY = inivam[i].pos.posY;
-				if (mapa.dist[iniX][iniY] <= 3){
+				if (mapa.dist[iniX][iniY] <= 10){
 					printw(" %d", inivam[i].vidainimigo);
 				} 
 			}
@@ -268,7 +273,7 @@ int main() {
 			for (i = 0; i < gamecontroller.qntdem; i++){
 				int iniX = inidem[i].pos.posX;
 				int iniY = inidem[i].pos.posY;
-				if (mapa.dist[iniX][iniY] <= 3 && inidem[i].vidainimigo > 0){
+				if (mapa.dist[iniX][iniY] <= 10 && inidem[i].vidainimigo > 0){
 					printw(" %d", inidem[i].vidainimigo);
 				} 
 			}
@@ -276,7 +281,7 @@ int main() {
 			for (i = 0; i < gamecontroller.qntfnt; i++){
 				int ini2X = inifnt[i].pos.posX;
 				int ini2Y = inifnt[i].pos.posY;
-				if (mapa.dist[ini2X][ini2Y] <= 3 && inifnt[i].vidainimigo > 0){
+				if (mapa.dist[ini2X][ini2Y] <= 10 && inifnt[i].vidainimigo > 0){
 					printw(" %d", inifnt[i].vidainimigo);
 				}
 			}
@@ -284,7 +289,7 @@ int main() {
 			for (i = 0; i < gamecontroller.qntvam; i++){
 				int iniX = inivam[i].pos.posX;
 				int iniY = inivam[i].pos.posY;
-				if (mapa.dist[iniX][iniY] <= 3 && inivam[i].vidainimigo > 0){
+				if (mapa.dist[iniX][iniY] <= 10 && inivam[i].vidainimigo > 0){
 					printw(" %d", inivam[i].vidainimigo);
 				} 
 			}
@@ -394,6 +399,31 @@ int main() {
 			ataqueini(&inivam[i], &st, mapa, 2);
 		}
 
+		for (i = 0; i < gamecontroller.qntdem; i++){
+			int X = inidem[i].pos.posX;
+    		int Y = inidem[i].pos.posY;
+    		if (mapa.dist[X][Y] > 1 && mapa.dist[X][Y] <= 10 && st.ataquedistpronto == 1 && inidem[i].vidainimigo>0){
+				ataqueplayerdistancia(&inidem[i], &st,&mapa);
+				st.ataquedistpronto = 0;
+			}
+		}
+		for (i = 0; i < gamecontroller.qntfnt; i++){
+			int X = inifnt[i].pos.posX;
+    		int Y = inifnt[i].pos.posY;
+    		if (mapa.dist[X][Y] > 1 && mapa.dist[X][Y] <= 10 && st.ataquedistpronto == 1 && inidem[i].vidainimigo>0){
+				ataqueplayerdistancia(&inifnt[i], &st,&mapa);
+				st.ataquedistpronto = 0;
+			}
+		}
+		for (i = 0; i < gamecontroller.qntvam; i++){
+			int X = inivam[i].pos.posX;
+    		int Y = inivam[i].pos.posY;
+    		if (mapa.dist[X][Y] > 1 && mapa.dist[X][Y] <= 10 && st.ataquedistpronto == 1 && inidem[i].vidainimigo>0){
+				ataqueplayerdistancia(&inivam[i], &st,&mapa);
+				st.ataquedistpronto = 0;
+			}
+		}
+
 		if ((st.pocaopronta == 1) && (st.vida < st.vidamaxima) && st.vida > 0){
 			usarpocao(&st);
 			st.pocaopronta = 0;
@@ -403,7 +433,7 @@ int main() {
 
 		if(st.vida < 0 && st.debugmode == 1){
 			    wclear(wnd);
-    			printw("\n\n\n\n\n\n\n\t\t YOU ARE DEAD, NOT BIG SURPRISE\n\t\t press any key to quit");
+    			printw("\n\n\n\n\n\n\n\t\t YOU ARE DEAD, NOT A BIG SURPRISE\n\t\t press any key to quit");
 				getch();
 				endwin(); exit(0); 
 		}

@@ -157,10 +157,11 @@ void gerar(PLAYER *s) {
 	s->flechas = 5;
 	s->ataqueespada = 1;
 	s->danoespada = 2;
-	s->ataquearco = 1;
+	s->ataquearco = 4;
 	s->danoarco = 3;
 	s->pocoesvida = 1;
 	s->aguabenta = 0;
 	s->ataquepronto = 0;
+	s->ataquedistpronto = 0;
 	s->pocaopronta = 0;
 }

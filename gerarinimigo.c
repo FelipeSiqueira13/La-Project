@@ -54,8 +54,8 @@ void gerarinimigovam(INIMIGO *s, MAP *r, PLAYER *t, POSICAO max){
     s->pos.posY = Y;
     s->vidainimigo = 42;
     s->defesainimigo = 6;
-    s->ataqueinimigo = 2;
-    s->danoinimigo = ((rand() % 4) + 3);
+    s->ataqueinimigo = 4;
+    s->danoinimigo = ((rand() % 8) + 1 + 3);
     s->trigger = 0;
     s->lastnear = 0;
 }

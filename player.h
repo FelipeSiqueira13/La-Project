@@ -18,6 +18,7 @@ typedef struct player{
 	int pocoesvida;
 	int aguabenta;
 	int ataquepronto;
+	int ataquedistpronto;
 	int pocaopronta;
 }PLAYER;
 

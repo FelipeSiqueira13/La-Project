@@ -7,3 +7,5 @@ void ataqueini(INIMIGO *s, PLAYER *r, MAP mapa, int distrange);
 void ataqueplayer(INIMIGO *s, PLAYER *r, MAP *mapa);
 
 void ataqueplayerdistancia(INIMIGO *s, PLAYER *r, MAP *mapa);
+
+void ataqueaguabenta(INIMIGO *s, PLAYER *r, MAP *mapa);

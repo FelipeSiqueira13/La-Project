@@ -20,6 +20,7 @@ typedef struct player{
 	int ataquepronto;
 	int ataquedistpronto;
 	int pocaopronta;
+	int aguabentapronta;
 }PLAYER;
 
 #endif

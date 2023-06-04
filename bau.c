@@ -9,7 +9,7 @@
 void novositens(PLAYER *s){
     int nivel = s->nivel;
     if (nivel >= 5){
-        s->aguabenta += rand() % 3;
+        s->aguabenta += rand() % 2;
         s->flechas += rand() % 41;
         s->pocoesvida += rand() % 5;
     } else {

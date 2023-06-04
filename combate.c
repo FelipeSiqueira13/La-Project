@@ -35,3 +35,12 @@ void ataqueplayerdistancia(INIMIGO *s, PLAYER *r, MAP *mapa){
         r->flechas -= 1;
     }
 }
+
+void ataqueaguabenta(INIMIGO *s, PLAYER *r, MAP *mapa){
+    if (s->vidainimigo > 0 && r->aguabenta > 0 && s->trigger == 1){
+        s->vidainimigo -= (4*(rand() % 8) + 4);
+        if(s->vidainimigo <= 0){
+            mapa->isenemyhere[s->pos.posX][s->pos.posY] = 0;
+        }
+    }
+}

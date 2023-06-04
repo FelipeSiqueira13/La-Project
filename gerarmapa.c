@@ -164,4 +164,5 @@ void gerar(PLAYER *s) {
 	s->ataquepronto = 0;
 	s->ataquedistpronto = 0;
 	s->pocaopronta = 0;
+	s->aguabentapronta = 0;
 }

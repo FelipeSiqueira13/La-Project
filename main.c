@@ -134,6 +134,11 @@ void update(PLAYER *st, MAP *mapa,CONTROL *gamecontroller,POSICAO max) {
 			st->pocaopronta = 1;
 			break;
 
+		case 'v':
+		case 'V':
+			st->aguabentapronta = 1;
+			break;
+
 		case 'p':
 		case 'P':
 			for(int i = 0; i< max.posX ;i++){
@@ -229,7 +234,7 @@ int main() {
 			for(i = 0;i < gamecontroller.qntvam;i++){
 				gerarinimigovam(&inivam[i],&mapa,&st, max);
 			}
-
+			st.nivel ++;
 		}
 		wclear(wnd);
 		move(nrows - 1, 0);
@@ -243,33 +248,8 @@ int main() {
 		vision(&mapa,st.pos);
 		attron(COLOR_PAIR(COLOR_BLUE));
 		int nivel = st.nivel;
-		if (nivel>=3){
+		if (nivel >= 5){
 			printw("(%d, %d) %d %d Nivel:%d Vida:%d/%d Defesa:%d Flechas:%d Espada:%d Arco:%d Pocoes de Vida:%d Agua Benta:%d Vida dos Inimigos:", st.pos.posY, st.pos.posX, nrows, ncols, st.nivel, st.vida, st.vidamaxima, st.defesa, st.flechas, st.ataqueespada, st.ataquearco, st.pocoesvida, st.aguabenta);
-			for (i = 0; i < gamecontroller.qntdem; i++){
-				int iniX = inidem[i].pos.posX;
-				int iniY = inidem[i].pos.posY;
-				if (mapa.dist[iniX][iniY] <= 10){
-					printw(" %d", inidem[i].vidainimigo);
-				} 
-			}
-
-			for (i = 0; i < gamecontroller.qntfnt; i++){
-				int ini2X = inifnt[i].pos.posX;
-				int ini2Y = inifnt[i].pos.posY;
-				if (mapa.dist[ini2X][ini2Y] <= 10){
-					printw(" %d", inifnt[i].vidainimigo);
-				}
-			}
-
-			for (i = 0; i < gamecontroller.qntvam; i++){
-				int iniX = inivam[i].pos.posX;
-				int iniY = inivam[i].pos.posY;
-				if (mapa.dist[iniX][iniY] <= 10){
-					printw(" %d", inivam[i].vidainimigo);
-				} 
-			}
-		} else{
-			printw("(%d, %d) %d %d Nivel:%d Vida:%d/%d Defesa:%d Flechas:%d Espada:%d Arco:%d Pocoes de Vida:%d ???:%d Vida dos Inimigos:", st.pos.posY, st.pos.posX, nrows, ncols, st.nivel, st.vida, st.vidamaxima, st.defesa, st.flechas, st.ataqueespada, st.ataquearco, st.pocoesvida, st.aguabenta);
 			for (i = 0; i < gamecontroller.qntdem; i++){
 				int iniX = inidem[i].pos.posX;
 				int iniY = inidem[i].pos.posY;
@@ -292,6 +272,31 @@ int main() {
 				if (mapa.dist[iniX][iniY] <= 10 && inivam[i].vidainimigo > 0){
 					printw(" %d", inivam[i].vidainimigo);
 				} 
+			}
+		} else{
+			printw("(%d, %d) %d %d Nivel:%d Vida:%d/%d Defesa:%d Flechas:%d Espada:%d Arco:%d Pocoes de Vida:%d ???:%d Vida dos Inimigos:", st.pos.posY, st.pos.posX, nrows, ncols, st.nivel, st.vida, st.vidamaxima, st.defesa, st.flechas, st.ataqueespada, st.ataquearco, st.pocoesvida, st.aguabenta);
+			for (i = 0; i < gamecontroller.qntdem; i++){
+				int iniX = inidem[i].pos.posX;
+				int iniY = inidem[i].pos.posY;
+				if (mapa.dist[iniX][iniY] <= 10 && inidem[i].vidainimigo > 0){
+					printw(" %d", inidem[i].vidainimigo);
+				}
+			}
+
+			for (i = 0; i < gamecontroller.qntfnt; i++){
+				int ini2X = inifnt[i].pos.posX;
+				int ini2Y = inifnt[i].pos.posY;
+				if (mapa.dist[ini2X][ini2Y] <= 10 && inifnt[i].vidainimigo > 0){
+					printw(" %d", inifnt[i].vidainimigo);
+				}
+			}
+
+			for (i = 0; i < gamecontroller.qntvam; i++){
+				int ini3X = inivam[i].pos.posX;
+				int ini3Y = inivam[i].pos.posY;
+				if (mapa.dist[ini3X][ini3Y] <= 10 && inivam[i].vidainimigo > 0){
+					printw(" %d", inivam[i].vidainimigo);
+				}
 			}
 		}
 		attroff(COLOR_PAIR(COLOR_BLUE));
@@ -346,11 +351,17 @@ int main() {
 			if(inifnt[i].trigger==1 && inifnt[i].vidainimigo > 0)
 				mvaddch(inifnt[i].pos.posX,inifnt[i].pos.posY , 'F' | A_BOLD);
 		}
-
 		for(i = 0;i < gamecontroller.qntvam;i++){
 			if(inivam[i].trigger==1 && inivam[i].vidainimigo > 0)
 				mvaddch(inivam[i].pos.posX,inivam[i].pos.posY , 'V' | A_BOLD);
 		}
+
+		
+		attroff(COLOR_PAIR(10));
+		move(st.pos.posX, st.pos.posY);	
+		update(&st, &mapa, &gamecontroller,max);
+
+// ataque corpo a corpo
 		for (i = 0; i < gamecontroller.qntdem; i++){
 			int X = inidem[i].pos.posX;
     		int Y = inidem[i].pos.posY;
@@ -379,6 +390,35 @@ int main() {
 			ataqueini(&inivam[i], &st, mapa, 2);
 		}
 
+// ataque agua benta
+		for (i = 0; i < gamecontroller.qntdem; i++){
+			int X = inidem[i].pos.posX;
+    		int Y = inidem[i].pos.posY;
+    		if (mapa.dist[X][Y] > 0 && mapa.dist[X][Y] <= 5 && st.aguabentapronta == 1 && inidem[i].vidainimigo>0){
+				ataqueaguabenta(&inidem[i], &st,&mapa);
+			}
+		}
+		for (i = 0; i < gamecontroller.qntfnt; i++){
+			int X = inifnt[i].pos.posX;
+    		int Y = inifnt[i].pos.posY;
+    		if (mapa.dist[X][Y] > 0 && mapa.dist[X][Y] <= 5 && st.aguabentapronta == 1 && inifnt[i].vidainimigo>0){
+				ataqueaguabenta(&inifnt[i], &st, &mapa);
+			}
+		}
+		for (i = 0; i < gamecontroller.qntvam; i++){
+			int X = inivam[i].pos.posX;
+    		int Y = inivam[i].pos.posY;
+    		if (mapa.dist[X][Y] > 0 && mapa.dist[X][Y] <= 5 && st.aguabentapronta == 1 && inivam[i].vidainimigo>0){
+				ataqueaguabenta(&inivam[i], &st,&mapa);
+				ataqueaguabenta(&inivam[i], &st,&mapa);
+			}
+		}
+		if (st.aguabentapronta == 1 && st.aguabenta > 0){
+			st.aguabenta -= 1;
+		}
+		st.aguabentapronta = 0;
+
+//ataque distancia
 		int distateplayer = 11;
 		int tipoinimigo = 4;
 		int id = 0;
@@ -426,16 +466,12 @@ int main() {
 			ataqueplayerdistancia(&inivam[id], &st,&mapa);
 		}
 		st.ataquedistpronto = 0;
-		
+
+// poção
 		if ((st.pocaopronta == 1) && (st.vida < st.vidamaxima) && st.vida > 0){
 			usarpocao(&st);
 			st.pocaopronta = 0;
-
 		}
-		
-		attroff(COLOR_PAIR(10));
-		move(st.pos.posX, st.pos.posY);	
-		update(&st, &mapa, &gamecontroller,max);
 
 		for(i = 0;i < gamecontroller.qntdem;i++){
 			if(inidem[i].trigger==1)

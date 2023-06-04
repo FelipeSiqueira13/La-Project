@@ -351,26 +351,6 @@ int main() {
 			if(inivam[i].trigger==1 && inivam[i].vidainimigo > 0)
 				mvaddch(inivam[i].pos.posX,inivam[i].pos.posY , 'V' | A_BOLD);
 		}
-
-		attroff(COLOR_PAIR(10));
-		move(st.pos.posX, st.pos.posY);	
-		update(&st, &mapa, &gamecontroller,max);
-
-		for(i = 0;i < gamecontroller.qntdem;i++){
-			if(inidem[i].trigger==1)
-				movimento_do_inimigo(&inidem[i], &mapa);
-		}
-		for(i = 0;i < gamecontroller.qntfnt;i++){
-			if(inifnt[i].trigger==1)
-				movimento_do_inimigo(&inifnt[i], &mapa);
-		}
-		for(i = 0;i < gamecontroller.qntvam;i++){
-			if(inivam[i].trigger==1){
-				movimento_do_inimigo(&inivam[i], &mapa);
-				movimento_do_inimigo(&inivam[i], &mapa);
-			}	
-		}
-
 		for (i = 0; i < gamecontroller.qntdem; i++){
 			int X = inidem[i].pos.posX;
     		int Y = inidem[i].pos.posY;
@@ -399,37 +379,78 @@ int main() {
 			ataqueini(&inivam[i], &st, mapa, 2);
 		}
 
+		int distateplayer = 11;
+		int tipoinimigo = 4;
+		int id = 0;
 		for (i = 0; i < gamecontroller.qntdem; i++){
 			int X = inidem[i].pos.posX;
     		int Y = inidem[i].pos.posY;
     		if (mapa.dist[X][Y] > 1 && mapa.dist[X][Y] <= 10 && st.ataquedistpronto == 1 && inidem[i].vidainimigo>0){
-				ataqueplayerdistancia(&inidem[i], &st,&mapa);
-				st.ataquedistpronto = 0;
+				if (mapa.dist[X][Y] < distateplayer){
+					distateplayer = mapa.dist[X][Y];
+					id = i;
+					tipoinimigo = 0;
+				}
 			}
 		}
 		for (i = 0; i < gamecontroller.qntfnt; i++){
 			int X = inifnt[i].pos.posX;
     		int Y = inifnt[i].pos.posY;
-    		if (mapa.dist[X][Y] > 1 && mapa.dist[X][Y] <= 10 && st.ataquedistpronto == 1 && inidem[i].vidainimigo>0){
-				ataqueplayerdistancia(&inifnt[i], &st,&mapa);
-				st.ataquedistpronto = 0;
+    		if (mapa.dist[X][Y] > 1 && mapa.dist[X][Y] <= 10 && st.ataquedistpronto == 1 && inifnt[i].vidainimigo>0){
+				if (mapa.dist[X][Y] < distateplayer){
+					distateplayer = mapa.dist[X][Y];
+					id = i;
+					tipoinimigo = 1;
+				}
 			}
 		}
 		for (i = 0; i < gamecontroller.qntvam; i++){
 			int X = inivam[i].pos.posX;
     		int Y = inivam[i].pos.posY;
-    		if (mapa.dist[X][Y] > 1 && mapa.dist[X][Y] <= 10 && st.ataquedistpronto == 1 && inidem[i].vidainimigo>0){
-				ataqueplayerdistancia(&inivam[i], &st,&mapa);
-				st.ataquedistpronto = 0;
+    		if (mapa.dist[X][Y] > 1 && mapa.dist[X][Y] <= 10 && st.ataquedistpronto == 1 && inivam[i].vidainimigo>0){
+				if (mapa.dist[X][Y] < distateplayer){
+					distateplayer = mapa.dist[X][Y];
+					id = i;
+					tipoinimigo = 2;
+				}
 			}
 		}
 
+		if (tipoinimigo == 0){
+			ataqueplayerdistancia(&inidem[id], &st,&mapa);
+		}
+		if (tipoinimigo == 1){
+			ataqueplayerdistancia(&inifnt[id], &st,&mapa);
+		}
+		if (tipoinimigo == 2){
+			ataqueplayerdistancia(&inivam[id], &st,&mapa);
+		}
+		st.ataquedistpronto = 0;
+		
 		if ((st.pocaopronta == 1) && (st.vida < st.vidamaxima) && st.vida > 0){
 			usarpocao(&st);
 			st.pocaopronta = 0;
 
 		}
+		
+		attroff(COLOR_PAIR(10));
+		move(st.pos.posX, st.pos.posY);	
+		update(&st, &mapa, &gamecontroller,max);
 
+		for(i = 0;i < gamecontroller.qntdem;i++){
+			if(inidem[i].trigger==1)
+				movimento_do_inimigo(&inidem[i], &mapa);
+		}
+		for(i = 0;i < gamecontroller.qntfnt;i++){
+			if(inifnt[i].trigger==1)
+				movimento_do_inimigo(&inifnt[i], &mapa);
+		}
+		for(i = 0;i < gamecontroller.qntvam;i++){
+			if(inivam[i].trigger==1){
+				movimento_do_inimigo(&inivam[i], &mapa);
+				movimento_do_inimigo(&inivam[i], &mapa);
+			}	
+		}
 
 		if(st.vida < 0 && st.debugmode == 1){
 			    wclear(wnd);

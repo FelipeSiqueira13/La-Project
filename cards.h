@@ -18,7 +18,10 @@ typedef struct cards{
 #endif
 
 void startcards(CARDS *cards);
+//Felipe Espinheira
 
 void callACard(PLAYER *st, CONTROL *gamecontrol, CARDS cards);
+//Felipe Espinheira
 
 void activecard(int id, PLAYER *st, CONTROL *gamecontrol);
+//Felipe Espinheira

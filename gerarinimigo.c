@@ -20,8 +20,7 @@ void gerarinimigodem(INIMIGO *s, MAP *r, PLAYER *t, POSICAO max){
     s->defesainimigo = 10;
     s->ataqueinimigo = 2;
     s->danoinimigo = ((rand() % 4) + 1 + 1);
-    s->trigger = 0;
-    s->lastnear = 0;    
+    s->trigger = 0;  
 }
 
 void gerarinimigofant(INIMIGO *s, MAP *r, PLAYER *t, POSICAO max){
@@ -39,7 +38,6 @@ void gerarinimigofant(INIMIGO *s, MAP *r, PLAYER *t, POSICAO max){
     s->ataqueinimigo = 4;
     s->danoinimigo = ((2*(rand() % 4) + 1) + 3);
     s->trigger = 0;
-    s->lastnear = 0;
 }
 
 void gerarinimigovam(INIMIGO *s, MAP *r, PLAYER *t, POSICAO max){
@@ -57,7 +55,6 @@ void gerarinimigovam(INIMIGO *s, MAP *r, PLAYER *t, POSICAO max){
     s->ataqueinimigo = 4;
     s->danoinimigo = ((rand() % 8) + 1 + 3);
     s->trigger = 0;
-    s->lastnear = 0;
 }
 
 void isactive(INIMIGO *s, MAP *r){

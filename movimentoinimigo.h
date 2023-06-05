@@ -6,3 +6,4 @@
 #include "movimento.h"
 
 void movimento_do_inimigo(INIMIGO *s, MAP *r);
+//Loren Narrane

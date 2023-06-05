@@ -10,7 +10,6 @@ typedef struct inimigo{
     int ataqueinimigo;
     int danoinimigo;
     int trigger; //trigger vai ser ou 1 ou 0, sendo 1=ele ve o jogador e 0=ele nao ve
-    int lastnear;
 }INIMIGO;
 
 #endif

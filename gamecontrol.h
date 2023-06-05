@@ -16,3 +16,4 @@ typedef struct control{
     // inimigos, nivel atual de mapa, bau
 
 void iniciarcontrol(CONTROL *controlo);
+//Felipe Espinheira

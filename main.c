@@ -186,10 +186,12 @@ int main() {
 	init_color(11,0,1000,0);//verde
 	init_color(12,1000,1000,0);//amarelo
 	init_color(13,600,600,0);//amarelo escuro
+	init_color(14,1000,550,0);//laranja
 	init_pair(11, 11, COLOR_BLACK);
 	init_pair(COLOR_WHITE, COLOR_WHITE, COLOR_BLACK);
     init_pair(12, 12, COLOR_BLACK);
     init_pair(13, 13, COLOR_BLACK);	
+	init_pair(14, 14, COLOR_BLACK);
     init_pair(COLOR_BLUE, COLOR_BLUE, COLOR_BLACK);
 	init_pair(10, 10, COLOR_BLACK);
 	init_pair(COLOR_GREEN, COLOR_GREEN, COLOR_BLACK);
@@ -234,6 +236,7 @@ int main() {
 				gerarinimigovam(&inivam[i],&mapa,&st, max);
 			}
 			st.nivel ++;
+			vision(&mapa,st.pos);
 		}
 		wclear(wnd);
 		move(nrows - 1, 0);
@@ -489,14 +492,52 @@ int main() {
 
 		if(st.vida <= 0 && st.debugmode == 0){
 			    wclear(wnd);
-    			printw("\n\n\n\n\n\n\n\t\t YOU ARE DEAD, NOT A BIG SURPRISE\n\t\t press any key to quit");
-				getch();
+    			printw("\n\n\n\n\n\n\n\t\t YOU ARE DEAD, NOT A BIG SURPRISE\n\t\t press Q to quit");
+				while(1){
+					int key = getch();	
+					switch(key) {
+						case 'Q':
+						case 'q': 
+							endwin(); exit(0); 
+							break;
+
+					}
+				}
 				endwin(); exit(0); 
 		}
 		if(gamecontroller.carinhos > 9){
 				wclear(wnd);
 				attron(COLOR_PAIR(9));
-    			printw("\n\n\n\n\n\n\n\t\t     ()  ()  ()  () \n\t\t     ||  ||  ||  || \n\t\t{~*~*~*~*~*~*~*~*~*~*~} \n\t\t@@@@@@@@@@@@@@@@@@@@@@@ \n\t\t{*~*~*~*~*~*~*~*~*~*~*} \n\t\t@@@@@@@@@@@@@@@@@@@@@@@ \n\t\t{~*~*~*~*~*~*~*~*~*~*~} \n\t\t{*~*~*~*~*~*~*~*~*~*~*} \n\t\t{~*~*~*~*~*~*~*~*~*~*~}\n\t\t@@@@@@@@@@@@@@@@@@@@@@@\n\t\tfrom the gays and doces team, congrats for wining the game \n\t\t\t\tpress any key to quit");
+					
+				printw("\n\n\n\n\n\n\n\t\t\t\t     ()  ()  ()  ()"); 
+				printw("\n\t\t\t\t     ||  ||  ||  || ");
+
+				printw("\n\t\t\t\t{~*~*~*~*~*~*~*~*~*~*~} ");
+
+				printw("\n\t\t\t\t@@@@@@@@@@@@@@@@@@@@@@@ ");
+
+				printw("\n\t\t\t\t{*~*~*~*~*~*~*~*~*~*~*} ");
+
+				printw("\n\t\t\t\t@@@@@@@@@@@@@@@@@@@@@@@ ");
+
+				printw("\n\t\t\t\t{~*~*~*~*~*~*~*~*~*~*~} ");
+
+				printw("\n\t\t\t\t{*~*~*~*~*~*~*~*~*~*~*} ");
+	
+				printw("\n\t\t\t\t{~*~*~*~*~*~*~*~*~*~*~}");
+				printw("\n\t\t\t\t@@@@@@@@@@@@@@@@@@@@@@@");
+	
+				printw("\n\t\tfrom the gays and doces team, congrats for wining the game \n\t\t\t\tpress Q to quit");
+				while(1){
+					int key = getch();	
+					switch(key) {
+						case 'Q':
+						case 'q': 
+							endwin(); exit(0); 
+							break;
+
+					}
+				}
 				attroff(COLOR_PAIR(9));
 				getch();
 				endwin(); exit(0); 

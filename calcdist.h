@@ -2,3 +2,4 @@
 #include "posicao.h"
 
 void calcdist(MAP *p, POSICAO pos, int acl);
+//Felipe Espinheira 

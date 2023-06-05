@@ -41,17 +41,38 @@ void startcards(CARDS *cards){
 
 void callACard(PLAYER *st, CONTROL *gamecontrol, CARDS cards){
     CARD options[3];
-    for(int i = 0; i <= 2; i++){
-        int raridade = rand() % 10, cardn;
-        
-        if(raridade == 0){
+    int raridade = rand() % 10, cardn;
+    
+    if(raridade == 0 && raridade ==1){
+        cardn = rand() % 5;
+        options[0] = cards.rare[cardn];
+    }else{
+        cardn = rand() % 9;
+        options[0] = cards.commum[cardn];
+    }
+    options[1] = options[0];
+    while(options[0].id == options[1].id){
+        raridade = rand() % 10;
+        if(raridade == 0 && raridade ==1){
             cardn = rand() % 5;
-            options[i] = cards.rare[cardn];
+            options[1] = cards.rare[cardn];
         }else{
             cardn = rand() % 9;
-            options[i] = cards.commum[cardn];
+            options[1] = cards.commum[cardn];
         }
     }
+    options[2] = options[0];
+        while(options[0].id == options[2].id || options[1].id == options[2].id ){
+        raridade = rand() % 10;
+        if(raridade == 0 && raridade ==1){
+            cardn = rand() % 5;
+            options[2] = cards.rare[cardn];
+        }else{
+            cardn = rand() % 9;
+            options[2] = cards.commum[cardn];
+        }
+    }
+
 
     int pass = 0;
     for(int j = 0; j <= 2 ; j++){

@@ -20,7 +20,6 @@
 #include "usarpocao.h"
 #include "cards.h"
 
-
 void update(PLAYER *st, MAP *mapa,CONTROL *gamecontroller,POSICAO max) {
 	int key = getch();	
 	POSICAO pos = st->pos;
@@ -179,14 +178,14 @@ int main() {
 	keypad(stdscr, true);	//pega informacoes do teclado
 
 
-	init_color(8,415,156,0);
+	init_color(8,415,156,0);//marrom
 	init_pair(8,8,COLOR_BLACK);
-	init_color(9,1000,400,700);
+	init_color(9,1000,400,700);//rosa
 	init_pair(9,9,COLOR_BLACK);
-	init_color(10,1000,0,0);
-	init_color(11,0,1000,0);
-	init_color(12,1000,1000,0);
-	init_color(13,600,600,0);
+	init_color(10,1000,0,0);//vermelho
+	init_color(11,0,1000,0);//verde
+	init_color(12,1000,1000,0);//amarelo
+	init_color(13,600,600,0);//amarelo escuro
 	init_pair(11, 11, COLOR_BLACK);
 	init_pair(COLOR_WHITE, COLOR_WHITE, COLOR_BLACK);
     init_pair(12, 12, COLOR_BLACK);
@@ -488,7 +487,7 @@ int main() {
 			}	
 		}
 
-		if(st.vida < 0 && st.debugmode == 1){
+		if(st.vida <= 0 && st.debugmode == 0){
 			    wclear(wnd);
     			printw("\n\n\n\n\n\n\n\t\t YOU ARE DEAD, NOT A BIG SURPRISE\n\t\t press any key to quit");
 				getch();
